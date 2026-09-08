@@ -17,7 +17,7 @@ function ensureVideoSurveillanceCard(){
   button.type='button';
   button.id='video-service';
   button.className='service-entry';
-  button.innerHTML=`<span class="service-icon" aria-hidden="true">📹</span><span><strong>Видеонаблюдение</strong><small>Информация будет добавлена позже</small></span>`;
+  button.innerHTML=`<span class="service-icon service-image-icon" aria-hidden="true"><img src="./video-camera-icon.svg?v=24" alt="" width="50" height="50"></span><span><strong>Видеонаблюдение</strong><small>«Домовой IT» · доступ и получение видеозаписей</small></span>`;
   list.appendChild(button);
 }
 
@@ -44,6 +44,37 @@ function prepareServiceCards(){
       title:'Домашний родник',
       icon:'./domashniy-rodnik.svg?v=13',
       body:`<div class="passport-grid"><section class="passport-card"><h3>💧 Домашний родник</h3><p>🏢 <strong>Адрес:</strong> г. Киров, ул. Пугачёва, д. 9</p><a class="passport-phone" href="tel:+78332413770">+7 (8332) 41-37-70</a><a class="service-contact-link" href="https://xn--80ahbpbejkkdefz2i.xn--p1ai/" target="_blank" rel="noopener">🌐 Открыть сайт</a></section></div>`
+    },
+    'video-service':{
+      subtitle:'«Домовой IT» · доступ и получение видеозаписей',
+      dialog:'video-detail-dialog',
+      title:'Видеонаблюдение',
+      icon:'./video-camera-icon.svg?v=24',
+      body:`<div class="passport-grid">
+        <section class="passport-card">
+          <h3>📹 «Домовой IT»</h3>
+          <a class="passport-phone" href="tel:+78332494989">8 (8332) 49-49-89</a>
+          <a class="service-contact-link" href="mailto:domovoi.it@mail.ru">✉️ domovoi.it@mail.ru</a>
+          <a class="service-contact-link" href="https://vk.com/domovoy" target="_blank" rel="noopener">VK · Домовой IT</a>
+          <a class="service-contact-link" href="https://domovoyit.ru/" target="_blank" rel="noopener">🌐 domovoyit.ru</a>
+        </section>
+        <section class="passport-card">
+          <h3>📱 Как получить удалённый online-доступ</h3>
+          <p><strong>1.</strong> Установите мобильное приложение DMSS.</p>
+          <a class="service-contact-link" href="https://play.google.com/store/apps/details?id=com.mm.android.DMSS" target="_blank" rel="noopener">▶️ DMSS в Google Play</a>
+          <a class="service-contact-link" href="https://apps.apple.com/app/dmss/id1493268178" target="_blank" rel="noopener"> DMSS в App Store</a>
+          <p><strong>2.</strong> Отправьте запрос на электронную почту <strong>domovoi.it@mail.ru</strong> с указанием адреса и обязательно приложите документ, подтверждающий право собственности, например выписку из ЕГРН.</p>
+          <a class="service-contact-link" href="mailto:domovoi.it@mail.ru">✉️ Написать запрос</a>
+        </section>
+        <section class="passport-card">
+          <h3>🎥 Как получить видеозапись с камер</h3>
+          <p>Отправьте запрос на электронную почту или через Telegram / WhatsApp.</p>
+          <a class="service-contact-link" href="mailto:domovoi.it@mail.ru">✉️ domovoi.it@mail.ru</a>
+          <a class="passport-phone" href="tel:+79229104989">8 (922) 910-49-89</a>
+          <a class="service-contact-link" href="https://wa.me/79229104989" target="_blank" rel="noopener">💬 Написать в WhatsApp</a>
+          <p><strong>В запросе укажите:</strong> Ф.И.О., адрес, дату, время, местоположение видеокамеры и электронную почту, на которую нужно отправить запись.</p>
+        </section>
+      </div>`
     }
   };
   for(const [id,s] of Object.entries(specs)){
