@@ -1,6 +1,6 @@
 function applyPassportIcons(){
   document.querySelectorAll('#passport-service .service-icon, #passport-dialog .passport-head .service-icon').forEach(icon=>{
-    icon.innerHTML='<img src="./passport-icon.svg?v=10" alt="" width="50" height="50">';
+    icon.innerHTML='<img src="./passport-real.png?v=11" alt="" width="50" height="50">';
     icon.classList.add('passport-image-icon');
   });
 }
