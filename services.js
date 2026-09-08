@@ -4,8 +4,33 @@ function applyPassportIcons(){
     icon.classList.add('passport-image-icon');
   });
 }
-applyPassportIcons();
-document.addEventListener('DOMContentLoaded',applyPassportIcons);
+
+function addServicePlaceholders(){
+  const list=document.querySelector('#services-dialog .service-list');
+  if(!list||document.querySelector('#elevator-service'))return;
+  const cards=[
+    {id:'elevator-service',title:'Обслуживание лифтов',icon:'./elevator-icon.svg?v=9'},
+    {id:'intercom-service',title:'Домофон',icon:'./intercom-icon.svg?v=9'},
+    {id:'spring-service',title:'Домашний родник',icon:'./domashniy-rodnik.svg?v=9'}
+  ];
+  for(const card of cards){
+    const item=document.createElement('div');
+    item.className='service-entry service-entry-static';
+    item.id=card.id;
+    item.style.cursor='default';
+    item.innerHTML=`<span class="service-icon" aria-hidden="true" style="background:#e4f3eb"><img src="${card.icon}" alt="" width="50" height="50" style="display:block;width:50px;height:50px;object-fit:contain"></span><span><strong>${card.title}</strong><small>Информация уточняется</small></span>`;
+    list.appendChild(item);
+  }
+}
+
+function initServices(){
+  applyPassportIcons();
+  addServicePlaceholders();
+}
+
+initServices();
+document.addEventListener('DOMContentLoaded',initServices);
+
 document.addEventListener('click',e=>{
   const button=e.target.closest('button');
   if(!button)return;
