@@ -1,0 +1,49 @@
+function serviceDialog(id,title,icon,body){
+  if(document.getElementById(id)) return document.getElementById(id);
+  const dialog=document.createElement('dialog');
+  dialog.id=id;
+  dialog.className='service-detail-dialog';
+  dialog.innerHTML=`<button type="button" class="passport-back service-detail-back">← Обслуживающие организации</button><div class="dialog-top"><h2>${title}</h2><button data-close aria-label="Закрыть">✕</button></div><div class="service-detail-head"><span class="service-icon service-image-icon"><img src="${icon}" alt="" width="50" height="50"></span><div><strong>${title}</strong><p>Контактная информация</p></div></div>${body}`;
+  document.body.appendChild(dialog);
+  dialog.querySelector('[data-close]').addEventListener('click',()=>dialog.close());
+  dialog.querySelector('.service-detail-back').addEventListener('click',()=>{dialog.close();document.getElementById('services-dialog')?.showModal();});
+  return dialog;
+}
+
+function prepareServiceCards(){
+  const specs={
+    'elevator-service':{
+      subtitle:'ООО «Лифтовая Компания» · обслуживание лифтов',
+      dialog:'elevator-detail-dialog',
+      title:'Обслуживание лифтов',
+      icon:'./elevator-icon.svg?v=13',
+      body:`<div class="passport-grid"><section class="passport-card"><h3>🔧 Обслуживание лифтов</h3><p><strong>Организация:</strong> ООО «Лифтовая Компания»</p><a class="passport-phone" href="tel:+78332497131">☎ 8 (8332) 49-71-31</a><a class="service-contact-link" href="mailto:liftst@mail.ru">✉️ liftst@mail.ru</a></section><section class="passport-card passport-note"><h3>🚨 Аварийная служба</h3><p>Телефон аварийной службы уточняется.</p></section></div>`
+    },
+    'intercom-service':{
+      subtitle:'ООО «Лифтовая Компания» · домофон',
+      dialog:'intercom-detail-dialog',
+      title:'Домофон',
+      icon:'./intercom-icon.svg?v=13',
+      body:`<div class="passport-grid"><section class="passport-card"><h3>🔧 Обслуживание / подключение домофона</h3><p><strong>Организация:</strong> ООО «Лифтовая Компания»</p><a class="passport-phone" href="tel:+78332497131">☎ 8 (8332) 49-71-31</a><a class="service-contact-link" href="mailto:liftst@mail.ru">✉️ liftst@mail.ru</a></section></div>`
+    },
+    'spring-service':{
+      subtitle:'Домашний родник · Киров',
+      dialog:'spring-detail-dialog',
+      title:'Домашний родник',
+      icon:'./domashniy-rodnik.svg?v=13',
+      body:`<div class="passport-grid"><section class="passport-card"><h3>💧 Домашний родник</h3><p>🏢 <strong>Адрес:</strong> г. Киров, ул. Пугачёва, д. 9</p><a class="passport-phone" href="tel:+78332413770">☎ +7 (8332) 41-37-70</a><a class="service-contact-link" href="https://домашнийродник.рф/" target="_blank" rel="noopener">🌐 Открыть сайт</a></section></div>`
+    }
+  };
+  for(const [id,s] of Object.entries(specs)){
+    const card=document.getElementById(id);
+    if(!card) continue;
+    const small=card.querySelector('small'); if(small) small.textContent=s.subtitle;
+    card.setAttribute('role','button'); card.setAttribute('tabindex','0'); card.style.cursor='pointer';
+    const dlg=serviceDialog(s.dialog,s.title,s.icon,s.body);
+    const open=()=>{document.getElementById('services-dialog')?.close();dlg.showModal();};
+    card.addEventListener('click',open);
+    card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open();}});
+  }
+}
+
+document.addEventListener('DOMContentLoaded',()=>setTimeout(prepareServiceCards,0));
