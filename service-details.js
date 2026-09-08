@@ -55,23 +55,21 @@ function prepareServiceCards(){
           <h3>📹 «Домовой IT»</h3>
           <a class="passport-phone" href="tel:+78332494989">8 (8332) 49-49-89</a>
           <a class="service-contact-link" href="mailto:domovoi.it@mail.ru">✉️ domovoi.it@mail.ru</a>
-          <a class="service-contact-link" href="https://vk.com/domovoy" target="_blank" rel="noopener">VK · Домовой IT</a>
           <a class="service-contact-link" href="https://domovoyit.ru/" target="_blank" rel="noopener">🌐 domovoyit.ru</a>
         </section>
         <section class="passport-card">
           <h3>📱 Как получить удалённый online-доступ</h3>
           <p><strong>1.</strong> Установите мобильное приложение DMSS.</p>
-          <a class="service-contact-link" href="https://play.google.com/store/apps/details?id=com.mm.android.DMSS" target="_blank" rel="noopener">▶️ DMSS в Google Play</a>
-          <a class="service-contact-link" href="https://apps.apple.com/app/dmss/id1493268178" target="_blank" rel="noopener"> DMSS в App Store</a>
+          <a class="service-contact-link store-link" href="https://play.google.com/store/apps/details?id=com.mm.android.DMSS" target="_blank" rel="noopener"><img src="./google-play-icon.svg?v=25" alt="Google Play" width="24" height="24"><span>DMSS в Google Play</span></a>
+          <a class="service-contact-link store-link" href="https://apps.apple.com/app/dmss/id1493268178" target="_blank" rel="noopener"><img src="./app-store-icon.svg?v=25" alt="App Store" width="24" height="24"><span>DMSS в App Store</span></a>
           <p><strong>2.</strong> Отправьте запрос на электронную почту <strong>domovoi.it@mail.ru</strong> с указанием адреса и обязательно приложите документ, подтверждающий право собственности, например выписку из ЕГРН.</p>
           <a class="service-contact-link" href="mailto:domovoi.it@mail.ru">✉️ Написать запрос</a>
         </section>
         <section class="passport-card">
           <h3>🎥 Как получить видеозапись с камер</h3>
-          <p>Отправьте запрос на электронную почту или через Telegram / WhatsApp.</p>
+          <p>Отправьте запрос на электронную почту или через Telegram.</p>
           <a class="service-contact-link" href="mailto:domovoi.it@mail.ru">✉️ domovoi.it@mail.ru</a>
           <a class="passport-phone" href="tel:+79229104989">8 (922) 910-49-89</a>
-          <a class="service-contact-link" href="https://wa.me/79229104989" target="_blank" rel="noopener">💬 Написать в WhatsApp</a>
           <p><strong>В запросе укажите:</strong> Ф.И.О., адрес, дату, время, местоположение видеокамеры и электронную почту, на которую нужно отправить запись.</p>
         </section>
       </div>`
