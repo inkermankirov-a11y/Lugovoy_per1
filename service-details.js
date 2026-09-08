@@ -35,14 +35,21 @@ function prepareServiceCards(){
     }
   };
   for(const [id,s] of Object.entries(specs)){
-    const card=document.getElementById(id);
+    let card=document.getElementById(id);
     if(!card) continue;
+    if(card.tagName!=='BUTTON'){
+      const button=document.createElement('button');
+      button.type='button';
+      button.id=card.id;
+      button.className='service-entry';
+      button.innerHTML=card.innerHTML;
+      card.replaceWith(button);
+      card=button;
+    }
     const small=card.querySelector('small'); if(small) small.textContent=s.subtitle;
-    card.setAttribute('role','button'); card.setAttribute('tabindex','0'); card.style.cursor='pointer';
+    card.style.cursor='pointer';
     const dlg=serviceDialog(s.dialog,s.title,s.icon,s.body);
-    const open=()=>{document.getElementById('services-dialog')?.close();dlg.showModal();};
-    card.addEventListener('click',open);
-    card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open();}});
+    card.addEventListener('click',()=>{document.getElementById('services-dialog')?.close();dlg.showModal();});
   }
 }
 
