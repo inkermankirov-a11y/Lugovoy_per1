@@ -10,7 +10,19 @@ function serviceDialog(id,title,icon,body){
   return dialog;
 }
 
+function ensureVideoSurveillanceCard(){
+  const list=document.querySelector('#services-dialog .service-list');
+  if(!list||document.getElementById('video-service'))return;
+  const button=document.createElement('button');
+  button.type='button';
+  button.id='video-service';
+  button.className='service-entry';
+  button.innerHTML=`<span class="service-icon" aria-hidden="true">📹</span><span><strong>Видеонаблюдение</strong><small>Информация будет добавлена позже</small></span>`;
+  list.appendChild(button);
+}
+
 function prepareServiceCards(){
+  ensureVideoSurveillanceCard();
   const specs={
     'elevator-service':{
       subtitle:'ООО «Лифтовая Компания» · обслуживание лифтов',
