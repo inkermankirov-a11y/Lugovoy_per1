@@ -62,3 +62,11 @@ document.addEventListener('click',e=>{
 });
 
 document.addEventListener('DOMContentLoaded',()=>setTimeout(prepareServiceCards,0));
+
+if(!document.querySelector('script[data-contact-actions]')){
+  const script=document.createElement('script');
+  script.src='./contact-actions.js?v=22';
+  script.defer=true;
+  script.dataset.contactActions='1';
+  document.head.appendChild(script);
+}
