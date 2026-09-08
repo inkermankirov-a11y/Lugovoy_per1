@@ -17,21 +17,21 @@ function prepareServiceCards(){
       dialog:'elevator-detail-dialog',
       title:'Обслуживание лифтов',
       icon:'./elevator-icon.svg?v=13',
-      body:`<div class="passport-grid"><section class="passport-card"><h3>🔧 Обслуживание лифтов</h3><p><strong>Организация:</strong> ООО «Лифтовая Компания»</p><a class="passport-phone" href="tel:+78332497131">☎ 8 (8332) 49-71-31</a><a class="service-contact-link" href="mailto:liftst@mail.ru">✉️ liftst@mail.ru</a></section><section class="passport-card passport-note"><h3>🚨 Аварийная служба</h3><p>Телефон аварийной службы уточняется.</p></section></div>`
+      body:`<div class="passport-grid"><section class="passport-card"><h3>🔧 Обслуживание лифтов</h3><p><strong>Организация:</strong> ООО «Лифтовая Компания»</p><a class="passport-phone" href="tel:+78332497131">☎ 8 (8332) 49-71-31</a><a class="service-contact-link" href="mailto:liftst@mail.ru">✉️ liftst@mail.ru</a></section><section class="passport-card passport-note"><h3>🚨 Аварийный телефон</h3><p>На уточнении.</p></section></div>`
     },
     'intercom-service':{
-      subtitle:'ООО «Лифтовая Компания» · домофон',
+      subtitle:'ООО «Лифтовая Компания» · обслуживание / подключение домофона',
       dialog:'intercom-detail-dialog',
       title:'Домофон',
       icon:'./intercom-icon.svg?v=13',
       body:`<div class="passport-grid"><section class="passport-card"><h3>🔧 Обслуживание / подключение домофона</h3><p><strong>Организация:</strong> ООО «Лифтовая Компания»</p><a class="passport-phone" href="tel:+78332497131">☎ 8 (8332) 49-71-31</a><a class="service-contact-link" href="mailto:liftst@mail.ru">✉️ liftst@mail.ru</a></section></div>`
     },
     'spring-service':{
-      subtitle:'Домашний родник · Киров',
+      subtitle:'г. Киров, ул. Пугачёва, д. 9',
       dialog:'spring-detail-dialog',
       title:'Домашний родник',
       icon:'./domashniy-rodnik.svg?v=13',
-      body:`<div class="passport-grid"><section class="passport-card"><h3>💧 Домашний родник</h3><p>🏢 <strong>Адрес:</strong> г. Киров, ул. Пугачёва, д. 9</p><a class="passport-phone" href="tel:+78332413770">☎ +7 (8332) 41-37-70</a><a class="service-contact-link" href="https://домашнийродник.рф/" target="_blank" rel="noopener">🌐 Открыть сайт</a></section></div>`
+      body:`<div class="passport-grid"><section class="passport-card"><h3>💧 Домашний родник</h3><p>🏢 <strong>Адрес:</strong> г. Киров, ул. Пугачёва, д. 9</p><a class="passport-phone" href="tel:+78332413770">☎ +7 (8332) 41-37-70</a><a class="service-contact-link" href="https://xn--80ahbpbejkkdefz2i.xn--p1ai/" target="_blank" rel="noopener">🌐 Открыть сайт</a></section></div>`
     }
   };
   for(const [id,s] of Object.entries(specs)){
