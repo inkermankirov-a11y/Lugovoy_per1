@@ -47,8 +47,13 @@
     return dialog;
   }
 
+  window.openUtilitiesDialog=()=>{
+    const dialog=ensureDialog();
+    if(!dialog.open)dialog.showModal();
+  };
+
   document.addEventListener('click',e=>{
     const button=e.target.closest('button');
-    if(button?.id===buttonId)ensureDialog().showModal();
+    if(button?.id===buttonId)window.openUtilitiesDialog();
   });
 })();
