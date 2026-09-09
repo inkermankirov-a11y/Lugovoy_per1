@@ -12,8 +12,6 @@
     <button type="button" class="new-home-card nav-cam" data-action="services"><span class="nav-emoji">🛠️</span><strong>Обслуживание</strong><small>Обслуживающие организации</small></button>
     <button type="button" class="new-home-card nav-intercom" data-action="utilities"><span class="nav-emoji">🧾</span><strong>Коммуналка</strong><small>Личные кабинеты и оплата</small></button>
     <button type="button" class="new-home-card nav-utilities" data-action="search"><span class="nav-emoji nav-app-icon" aria-hidden="true"><img src="./icon.svg" alt="" width="40" height="40"></span><strong>Этажи</strong><small>Найти квартиру на этаже</small></button>
-    <button type="button" class="new-home-card nav-search" data-service="video-service"><span class="nav-emoji">📹</span><strong>Камеры</strong><small>Доступ и видеозаписи</small></button>
-    <button type="button" class="new-home-card nav-services" data-service="intercom-service"><span class="nav-emoji">🔔</span><strong>Домофон</strong><small>Приложение и инструкция</small></button>
     <button type="button" class="new-home-card nav-chat" data-action="house-chat"><span class="nav-emoji">💬</span><strong>Чат дома</strong><small>Общение жильцов во VK</small></button>
     <button type="button" class="new-home-card nav-market" data-action="house-market"><span class="nav-emoji">🛍️</span><strong>Маркет</strong><small>Купить или продать в доме</small></button>
   </div>`;
@@ -54,19 +52,11 @@
     if(dialog instanceof HTMLDialogElement&&!dialog.open)dialog.showModal();
   };
 
-  const openService=serviceId=>{
-    openDialog('services-dialog');
-    requestAnimationFrame(()=>document.getElementById(serviceId)?.click());
-  };
-
   back.addEventListener('click',()=>showHome());
 
   nav.addEventListener('click',e=>{
     const button=e.target.closest('button');
     if(!button)return;
-
-    const serviceId=button.dataset.service;
-    if(serviceId){openService(serviceId);return;}
 
     switch(button.dataset.action){
       case 'search':
