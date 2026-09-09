@@ -13,7 +13,7 @@
     <button type="button" class="new-home-card nav-intercom" data-service="intercom-service"><span class="nav-emoji">🔔</span><strong>Домофон</strong><small>Приложение и инструкция</small></button>
     <button type="button" class="new-home-card nav-utilities" data-action="utilities"><span class="nav-emoji">🧾</span><strong>Коммуналка</strong><small>Личные кабинеты и оплата</small></button>
     <button type="button" class="new-home-card nav-search" data-action="search"><span class="nav-emoji">🔎</span><strong>Поиск квартиры</strong><small>Найти квартиру на этаже</small></button>
-    <button type="button" class="new-home-card nav-services" data-action="services"><span class="nav-emoji">🛠️</span><strong>Полезное</strong><small>Обслуживающие организации</small></button>
+    <button type="button" class="new-home-card nav-services" data-action="services"><span class="nav-emoji">🛠️</span><strong>Обслуживание</strong><small>Обслуживающие организации</small></button>
   </div>`;
   main.insertBefore(nav,searchPanel);
 
