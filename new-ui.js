@@ -42,6 +42,9 @@
   searchPanel.querySelector('#status')?.before(keypad);
 
   const touchMode=matchMedia('(pointer:coarse)').matches||navigator.maxTouchPoints>0;
+  const mobileDevice=typeof navigator.userAgentData?.mobile==='boolean'
+    ?navigator.userAgentData.mobile
+    :/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
   if(touchMode&&numbersInput){
     numbersInput.readOnly=true;
     numbersInput.setAttribute('inputmode','none');
@@ -123,7 +126,7 @@
     if(!button)return;
     if(button.hasAttribute('data-link-close')){linkDialog.close();return;}
     if(button.classList.contains('external-link-go')){
-      if(touchMode){
+      if(mobileDevice){
         linkDialog.close();
         window.location.href=pendingLink;
       }else{
