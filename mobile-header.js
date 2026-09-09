@@ -13,39 +13,31 @@
       .masthead .brand>div{min-width:0!important}
       .masthead .brand img{width:32px!important;height:32px!important;flex:0 0 32px!important}
       .masthead .brand h1{font-size:1.28rem!important;line-height:1!important;white-space:nowrap!important}
-      .masthead .brand p{display:none!important}
+      .masthead .brand p{display:block!important;margin-top:4px!important;color:#bcd0d7!important;font-size:.62rem!important;line-height:1.15!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;max-width:128px!important}
       .header-status{display:contents!important;margin:0!important}
       .weather-pill{grid-area:weather!important;width:58px!important;min-width:58px!important;height:46px!important;padding:4px 5px!important;border-radius:10px!important;grid-template-columns:auto auto!important;grid-template-areas:"icon temp" "city city"!important;column-gap:3px!important;row-gap:2px!important}
       .weather-icon{font-size:.76rem!important}.weather-temp{font-size:.74rem!important}.weather-city{display:block!important;font-size:.45rem!important}
       .currency-pill{grid-area:currency!important;width:58px!important;min-width:58px!important;height:46px!important;padding:4px 5px!important;border-radius:10px!important;gap:2px!important}
       .currency-code{font-size:.47rem!important}.currency-value{font-size:.61rem!important}
       .quiet{grid-area:about!important;min-height:46px!important;padding:7px 8px!important;font-size:.68rem!important;white-space:nowrap!important;align-self:center!important}
-      .mobile-house-line{display:block;margin:0 0 8px;color:var(--green);font-size:.82rem;font-weight:750;line-height:1.25}
+      .mobile-house-line{display:none!important}
     }
     @media(max-width:390px){
       .masthead{padding-left:8px!important;padding-right:8px!important;column-gap:4px!important}
       .masthead .brand img{width:30px!important;height:30px!important;flex-basis:30px!important}
       .masthead .brand h1{font-size:1.18rem!important}
+      .masthead .brand p{font-size:.58rem!important;max-width:112px!important}
       .weather-pill{width:54px!important;min-width:54px!important}.currency-pill{width:54px!important;min-width:54px!important}
       .quiet{font-size:.64rem!important;padding-left:6px!important;padding-right:6px!important}
-      .mobile-house-line{font-size:.78rem;margin-bottom:7px}
     }
     @media(max-width:350px){
       .masthead .brand h1{font-size:1.08rem!important}.masthead .brand img{width:28px!important;height:28px!important;flex-basis:28px!important}
+      .masthead .brand p{font-size:.54rem!important;max-width:98px!important}
       .weather-pill{width:50px!important;min-width:50px!important}.currency-pill{width:50px!important;min-width:50px!important}
       .quiet{font-size:.6rem!important;padding-left:5px!important;padding-right:5px!important}
     }
   `;
   document.head.appendChild(style);
-
-  let line=searchPanel.querySelector('.mobile-house-line');
-  if(!line){
-    line=document.createElement('div');
-    line.className='mobile-house-line';
-    line.textContent=brandAddress.textContent.trim();
-    const heading=searchPanel.querySelector('.search-heading');
-    heading?searchPanel.insertBefore(line,heading):searchPanel.prepend(line);
-  }
 })();
 
 if(!document.querySelector('script[data-intercom-downloads]')){
