@@ -14,6 +14,7 @@
     <button type="button" class="new-home-card nav-utilities" data-action="search"><span class="nav-emoji nav-app-icon" aria-hidden="true"><img src="./icon.svg" alt="" width="40" height="40"></span><strong>Этажи</strong><small>Найти квартиру на этаже</small></button>
     <button type="button" class="new-home-card nav-search" data-service="video-service"><span class="nav-emoji">📹</span><strong>Камеры</strong><small>Доступ и видеозаписи</small></button>
     <button type="button" class="new-home-card nav-services" data-service="intercom-service"><span class="nav-emoji">🔔</span><strong>Домофон</strong><small>Приложение и инструкция</small></button>
+    <button type="button" class="new-home-card nav-chat" data-action="house-chat"><span class="nav-emoji">💬</span><strong>Чат дома</strong><small>Общение жильцов во VK</small></button>
   </div>`;
   main.insertBefore(nav,searchPanel);
 
@@ -80,6 +81,9 @@
         break;
       case 'services':
         openDialog('services-dialog');
+        break;
+      case 'house-chat':
+        window.location.href='https://vk.me/join/HHUNBMEnfqy7_eCGM2uYCdiI69taPCLuqTw=';
         break;
     }
   });
