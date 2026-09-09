@@ -1,7 +1,8 @@
 (()=>{
   const main=document.getElementById('top');
   const searchPanel=document.querySelector('.search-panel');
-  if(!main||!searchPanel)return;
+  const workspace=document.querySelector('.workspace');
+  if(!main||!searchPanel||!workspace)return;
 
   const nav=document.createElement('section');
   nav.className='new-home-nav';
@@ -16,6 +17,12 @@
   </div>`;
   main.insertBefore(nav,searchPanel);
 
+  const back=document.createElement('button');
+  back.type='button';
+  back.className='new-ui-search-back';
+  back.innerHTML='<span aria-hidden="true">←</span> Назад к разделам';
+  main.insertBefore(back,searchPanel);
+
   const brand=document.querySelector('.brand>div');
   if(brand&&!brand.querySelector('.new-ui-tag')){
     const tag=document.createElement('div');
@@ -23,6 +30,27 @@
     tag.textContent='Полезная информация для жителей';
     brand.appendChild(tag);
   }
+
+  const showHome=({scroll=true}={})=>{
+    nav.hidden=false;
+    back.hidden=true;
+    searchPanel.hidden=true;
+    workspace.hidden=true;
+    main.classList.remove('search-view');
+    if(scroll)nav.scrollIntoView({behavior:'smooth',block:'start'});
+  };
+
+  const showSearch=({focus=true}={})=>{
+    nav.hidden=true;
+    back.hidden=false;
+    searchPanel.hidden=false;
+    workspace.hidden=false;
+    main.classList.add('search-view');
+    searchPanel.classList.add('search-focus');
+    back.scrollIntoView({behavior:'smooth',block:'start'});
+    if(focus)setTimeout(()=>document.getElementById('numbers')?.focus({preventScroll:true}),350);
+    setTimeout(()=>searchPanel.classList.remove('search-focus'),1600);
+  };
 
   const openDialog=id=>{
     const dialog=document.getElementById(id);
@@ -34,6 +62,8 @@
     requestAnimationFrame(()=>document.getElementById(serviceId)?.click());
   };
 
+  back.addEventListener('click',()=>showHome());
+
   nav.addEventListener('click',e=>{
     const button=e.target.closest('button');
     if(!button)return;
@@ -43,10 +73,7 @@
 
     switch(button.dataset.action){
       case 'search':
-        searchPanel.classList.add('search-focus');
-        searchPanel.scrollIntoView({behavior:'smooth',block:'start'});
-        setTimeout(()=>document.getElementById('numbers')?.focus({preventScroll:true}),350);
-        setTimeout(()=>searchPanel.classList.remove('search-focus'),1600);
+        showSearch();
         break;
       case 'management':
         if(typeof window.updateManagementInfo==='function')window.updateManagementInfo();
@@ -61,4 +88,7 @@
         break;
     }
   });
+
+  if(location.hash.startsWith('#q=')) showSearch({focus:false});
+  else showHome({scroll:false});
 })();
