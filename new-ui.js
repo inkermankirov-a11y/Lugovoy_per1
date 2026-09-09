@@ -17,11 +17,18 @@
   </div>`;
   main.insertBefore(nav,searchPanel);
 
+  const searchView=document.createElement('section');
+  searchView.className='new-ui-search-view';
+  searchView.setAttribute('aria-label','Поиск квартиры');
+  main.insertBefore(searchView,searchPanel);
+
   const back=document.createElement('button');
   back.type='button';
   back.className='new-ui-search-back';
   back.innerHTML='<span aria-hidden="true">←</span> Назад к разделам';
-  main.insertBefore(back,searchPanel);
+  searchView.appendChild(back);
+  searchView.appendChild(searchPanel);
+  searchView.appendChild(workspace);
 
   const brand=document.querySelector('.brand>div');
   if(brand&&!brand.querySelector('.new-ui-tag')){
@@ -33,21 +40,17 @@
 
   const showHome=({scroll=true}={})=>{
     nav.hidden=false;
-    back.hidden=true;
-    searchPanel.hidden=true;
-    workspace.hidden=true;
+    searchView.hidden=true;
     main.classList.remove('search-view');
     if(scroll)nav.scrollIntoView({behavior:'smooth',block:'start'});
   };
 
   const showSearch=({focus=true}={})=>{
     nav.hidden=true;
-    back.hidden=false;
-    searchPanel.hidden=false;
-    workspace.hidden=false;
+    searchView.hidden=false;
     main.classList.add('search-view');
     searchPanel.classList.add('search-focus');
-    back.scrollIntoView({behavior:'smooth',block:'start'});
+    searchView.scrollIntoView({behavior:'smooth',block:'start'});
     if(focus)setTimeout(()=>document.getElementById('numbers')?.focus({preventScroll:true}),350);
     setTimeout(()=>searchPanel.classList.remove('search-focus'),1600);
   };
