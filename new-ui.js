@@ -9,11 +9,11 @@
   nav.setAttribute('aria-label','Основные разделы');
   nav.innerHTML=`<p class="new-ui-section-label">Главное</p><div class="new-home-grid">
     <button type="button" class="new-home-card nav-house" data-action="management"><span class="nav-emoji">🏢</span><strong>О доме</strong><small>Управляющая компания и контакты</small></button>
-    <button type="button" class="new-home-card nav-cam" data-service="video-service"><span class="nav-emoji">📹</span><strong>Камеры</strong><small>Доступ и видеозаписи</small></button>
-    <button type="button" class="new-home-card nav-intercom" data-service="intercom-service"><span class="nav-emoji">🔔</span><strong>Домофон</strong><small>Приложение и инструкция</small></button>
+    <button type="button" class="new-home-card nav-services" data-action="services"><span class="nav-emoji">🛠️</span><strong>Обслуживание</strong><small>Обслуживающие организации</small></button>
     <button type="button" class="new-home-card nav-utilities" data-action="utilities"><span class="nav-emoji">🧾</span><strong>Коммуналка</strong><small>Личные кабинеты и оплата</small></button>
     <button type="button" class="new-home-card nav-search" data-action="search"><span class="nav-emoji">🔎</span><strong>Поиск квартиры</strong><small>Найти квартиру на этаже</small></button>
-    <button type="button" class="new-home-card nav-services" data-action="services"><span class="nav-emoji">🛠️</span><strong>Обслуживание</strong><small>Обслуживающие организации</small></button>
+    <button type="button" class="new-home-card nav-cam" data-service="video-service"><span class="nav-emoji">📹</span><strong>Камеры</strong><small>Доступ и видеозаписи</small></button>
+    <button type="button" class="new-home-card nav-intercom" data-service="intercom-service"><span class="nav-emoji">🔔</span><strong>Домофон</strong><small>Приложение и инструкция</small></button>
   </div>`;
   main.insertBefore(nav,searchPanel);
 
