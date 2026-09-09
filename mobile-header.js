@@ -1,12 +1,10 @@
 (()=>{
   const header=document.querySelector('.masthead');
-  const brandAddress=header?.querySelector('.brand p');
-  const footer=document.querySelector('footer');
-  if(!header||!brandAddress||!footer)return;
+  if(!header)return;
 
   const style=document.createElement('style');
   style.textContent=`
-    .mobile-footer-address{display:none}
+    .footer-address{display:block;margin-top:4px;color:var(--green);font-weight:700}
     @media(max-width:760px){
       .masthead{display:grid!important;grid-template-columns:minmax(0,1fr) auto auto auto!important;grid-template-areas:"brand weather currency about"!important;align-items:center!important;column-gap:5px!important;row-gap:0!important;padding:14px 10px!important}
       .masthead .brand{grid-area:brand!important;min-width:0!important;display:flex!important;align-items:center!important;gap:6px!important}
@@ -20,8 +18,8 @@
       .currency-pill{grid-area:currency!important;width:58px!important;min-width:58px!important;height:46px!important;padding:4px 5px!important;border-radius:10px!important;gap:2px!important}
       .currency-code{font-size:.47rem!important}.currency-value{font-size:.61rem!important}
       .quiet{grid-area:about!important;min-height:46px!important;padding:7px 8px!important;font-size:.68rem!important;white-space:nowrap!important;align-self:center!important}
-      .mobile-house-line{display:none!important}
-      .mobile-footer-address{display:block;width:100%;font-size:.88rem;font-weight:700;color:var(--green);margin-top:2px}
+      .mobile-house-line,.mobile-footer-address{display:none!important}
+      .footer-address{font-size:.88rem}
     }
     @media(max-width:390px){
       .masthead{padding-left:8px!important;padding-right:8px!important;column-gap:4px!important}
@@ -29,7 +27,7 @@
       .masthead .brand h1{font-size:1.18rem!important}
       .weather-pill{width:54px!important;min-width:54px!important}.currency-pill{width:54px!important;min-width:54px!important}
       .quiet{font-size:.64rem!important;padding-left:6px!important;padding-right:6px!important}
-      .mobile-footer-address{font-size:.82rem}
+      .footer-address{font-size:.82rem}
     }
     @media(max-width:350px){
       .masthead .brand h1{font-size:1.08rem!important}.masthead .brand img{width:28px!important;height:28px!important;flex-basis:28px!important}
@@ -38,13 +36,6 @@
     }
   `;
   document.head.appendChild(style);
-
-  if(!footer.querySelector('.mobile-footer-address')){
-    const line=document.createElement('div');
-    line.className='mobile-footer-address';
-    line.textContent=brandAddress.textContent.trim();
-    footer.prepend(line);
-  }
 })();
 
 if(!document.querySelector('script[data-intercom-downloads]')){
