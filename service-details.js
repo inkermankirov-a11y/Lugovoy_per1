@@ -64,11 +64,48 @@ function prepareServiceCards(){
       </div>`
     },
     'intercom-service':{
-      subtitle:'ООО «Лифтовая Компания» · обслуживание / подключение домофона',
+      subtitle:'«Домовой IT» · приложение «Наш дом» и открытие домофона',
       dialog:'intercom-detail-dialog',
       title:'Домофон',
       icon:'./intercom-icon.svg?v=13',
-      body:`<div class="passport-grid"><section class="passport-card"><h3>🔧 Обслуживание / подключение домофона</h3><p><strong>Организация:</strong> ООО «Лифтовая Компания»</p><a class="passport-phone" href="tel:+78332497131">8 (8332) 49-71-31</a><a class="service-contact-link" href="mailto:liftst@mail.ru">✉️ liftst@mail.ru</a></section></div>`
+      body:`<div class="passport-grid">
+        <section class="passport-card">
+          <h3>🏠 «Домовой IT»</h3>
+          <a class="passport-phone" href="tel:+78332494989">8 (8332) 49-49-89</a>
+          <a class="service-contact-link" href="mailto:domovoi.it@mail.ru">✉️ domovoi.it@mail.ru</a>
+          <a class="service-contact-link" href="https://domovoyit.ru/" target="_blank" rel="noopener">🌐 domovoyit.ru</a>
+          <a class="service-contact-link" href="https://vk.com/domovoy" target="_blank" rel="noopener">VK · Домовой IT</a>
+        </section>
+        <section class="passport-card">
+          <h3>📱 Регистрация в приложении «Наш дом»</h3>
+          <ol class="lift-rules">
+            <li>Скачайте и установите мобильное приложение «Наш дом».</li>
+            <li>После запуска приложения введите номер телефона для регистрации.</li>
+            <li>Для подтверждения регистрации на телефон поступит автоматический звонок. В специальное поле введите последние 4 цифры номера, с которого поступил звонок.</li>
+            <li>Введите регистрационные данные: имя и фамилию.</li>
+            <li>Наберите на домофоне трёхзначный код, который будет показан на экране приложения, и приложите к домофону ключ-брелок. Дверь подъезда должна быть открыта.</li>
+            <li>Проверьте и подтвердите адрес, затем введите номер квартиры.</li>
+            <li>После успешной регистрации в приложении появится изображение с камеры домофона.</li>
+          </ol>
+        </section>
+        <section class="passport-card">
+          <h3>🔔 Как включить звонки в приложении</h3>
+          <ol class="lift-rules">
+            <li>Откройте приложение «Наш дом».</li>
+            <li>Нажмите внизу на вторую слева вкладку.</li>
+            <li>Откройте «Управление домофоном».</li>
+            <li>Активируйте функцию «Принимать звонки в приложении».</li>
+          </ol>
+        </section>
+        <section class="passport-card">
+          <h3>🤖 Android</h3>
+          <p>При поступлении звонка на экране вызова отображается изображение с камеры. После ответа откроется приложение, где можно увидеть собеседника и открыть дверь.</p>
+        </section>
+        <section class="passport-card">
+          <h3>🍎 iPhone</h3>
+          <p>При поступлении звонка отображается обычный аудиовызов. Чтобы увидеть изображение с камеры, нажмите «Спутник» или значок микрофона в левом верхнем углу экрана. После разблокировки телефона откроется приложение, где можно увидеть собеседника и открыть дверь.</p>
+        </section>
+      </div>`
     },
     'spring-service':{
       subtitle:'г. Киров, ул. Пугачёва, д. 9',
