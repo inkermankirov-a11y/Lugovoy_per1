@@ -40,14 +40,6 @@
     }
   }
   async function copy(text){await writeClipboard(text);dialog.close()}
-  function normalizedPhone(value){let digits=value.replace(/\D/g,'');if(digits.length===11&&digits[0]==='8')digits='7'+digits.slice(1);if(digits.length===10&&digits[0]==='9')digits='7'+digits;return digits}
-  function isRussianMobile(value){return /^79\d{9}$/.test(normalizedPhone(value))}
-  async function openMax(value){
-    const digits=normalizedPhone(value),number=digits?`+${digits}`:value;
-    await writeClipboard(number);
-    dialog.close();
-    window.open('https://max.ru/','_blank','noopener');
-  }
   function openMenu(kind,value,label,href){
     title.textContent=label;
     subtitle.textContent=kind==='phone'?'Что сделать с номером?':kind==='email'?'Что сделать с почтой?':'Что сделать с адресом?';
@@ -55,7 +47,6 @@
     const add=(text,primary,fn)=>{const b=document.createElement('button');b.type='button';b.textContent=text;if(primary)b.className='primary-action';b.addEventListener('click',fn);buttons.appendChild(b)};
     if(kind==='phone'){
       add('📋 Копировать номер',false,()=>copy(label));
-      if(isRussianMobile(value))add('💬 Написать в MAX',false,()=>openMax(value));
       add('📞 Позвонить',true,()=>{dialog.close();location.href=href});
     }else if(kind==='email'){
       add('📋 Копировать почту',false,()=>copy(value));
