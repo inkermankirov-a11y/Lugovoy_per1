@@ -20,7 +20,7 @@
   document.head.appendChild(style);
 
   const favicon=domain=>`https://www.google.com/s2/favicons?domain=${encodeURIComponent(domain)}&sz=64`;
-  const item=(href,icon,title,subtitle='Личный кабинет')=>`<a class="utility-link" href="${href}" target="_blank" rel="noopener"><span class="utility-link-main"><span class="utility-site-icon" aria-hidden="true"><img src="${icon}" alt="" width="44" height="36"></span><span class="utility-link-text">${title}<small>${subtitle}</small></span></span></a>`;
+  const item=(href,icon,title,subtitle='Личный кабинет')=>`<a class="utility-link" href="${href}" target="_blank" rel="noopener noreferrer"><span class="utility-link-main"><span class="utility-site-icon" aria-hidden="true"><img src="${icon}" alt="" width="44" height="36"></span><span class="utility-link-text">${title}<small>${subtitle}</small></span></span></a>`;
 
   function ensureDialog(){
     let dialog=document.getElementById(dialogId);
@@ -39,6 +39,12 @@
       </div>`;
     document.body.appendChild(dialog);
     dialog.querySelector('[data-close]').addEventListener('click',()=>dialog.close());
+    dialog.querySelector('.utilities-list').addEventListener('click',e=>{
+      const link=e.target.closest('a.utility-link');
+      if(!link)return;
+      e.preventDefault();
+      window.open(link.href,'_blank','noopener,noreferrer');
+    });
     dialog.addEventListener('click',e=>{
       const r=dialog.getBoundingClientRect();
       const inside=e.clientX>=r.left&&e.clientX<=r.right&&e.clientY>=r.top&&e.clientY<=r.bottom;
