@@ -30,6 +30,40 @@
   searchView.appendChild(searchPanel);
   searchView.appendChild(workspace);
 
+  const numbersInput=document.getElementById('numbers');
+  const keypad=document.createElement('div');
+  keypad.className='apartment-keypad';
+  keypad.setAttribute('role','group');
+  keypad.setAttribute('aria-label','Цифровая клавиатура для номера квартиры');
+  keypad.innerHTML=`
+    ${[1,2,3,4,5,6,7,8,9].map(n=>`<button type="button" class="apartment-key" data-number="${n}" aria-label="${n}">${n}</button>`).join('')}
+    <button type="button" class="apartment-key apartment-key-zero" data-number="0" aria-label="0">0</button>
+    <button type="button" class="apartment-key apartment-key-delete" data-delete-number aria-label="Удалить последнюю цифру">⌫ <span>Удалить</span></button>`;
+  searchPanel.querySelector('#status')?.before(keypad);
+
+  const touchMode=matchMedia('(pointer:coarse)').matches||navigator.maxTouchPoints>0;
+  if(touchMode&&numbersInput){
+    numbersInput.readOnly=true;
+    numbersInput.setAttribute('inputmode','none');
+    numbersInput.setAttribute('aria-describedby','status');
+  }
+
+  keypad.addEventListener('click',e=>{
+    const button=e.target.closest('button');
+    if(!button||!numbersInput)return;
+    if(button.hasAttribute('data-delete-number')){
+      numbersInput.value=numbersInput.value.slice(0,-1);
+      numbersInput.focus({preventScroll:true});
+      return;
+    }
+    const digit=button.dataset.number;
+    if(digit===undefined)return;
+    if(!numbersInput.value&&digit==='0')return;
+    if(numbersInput.value.length>=3)return;
+    numbersInput.value+=digit;
+    numbersInput.focus({preventScroll:true});
+  });
+
   const showHome=({scroll=true}={})=>{
     nav.hidden=false;
     searchView.hidden=true;
@@ -43,7 +77,7 @@
     main.classList.add('search-view');
     searchPanel.classList.add('search-focus');
     searchView.scrollIntoView({behavior:'smooth',block:'start'});
-    if(focus)setTimeout(()=>document.getElementById('numbers')?.focus({preventScroll:true}),350);
+    if(focus)setTimeout(()=>numbersInput?.focus({preventScroll:true}),350);
     setTimeout(()=>searchPanel.classList.remove('search-focus'),1600);
   };
 
