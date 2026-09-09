@@ -92,11 +92,9 @@
   linkDialog.innerHTML=`<div class="dialog-top"><h2 id="external-link-title">Открыть ссылку</h2><button type="button" data-link-close aria-label="Закрыть">✕</button></div><p class="external-link-text"></p><div class="external-link-actions"><button type="button" class="external-link-go">Перейти</button><button type="button" class="external-link-copy">Скопировать ссылку</button></div><p class="external-link-status" role="status" aria-live="polite"></p>`;
   document.body.appendChild(linkDialog);
   let pendingLink='';
-  let pendingLabel='';
 
   const showLinkDialog=(label,url)=>{
     pendingLink=url;
-    pendingLabel=label;
     linkDialog.querySelector('#external-link-title').textContent=label;
     linkDialog.querySelector('.external-link-text').textContent='Выберите действие:';
     linkDialog.querySelector('.external-link-status').textContent='';
@@ -124,7 +122,12 @@
     const button=e.target.closest('button');
     if(!button)return;
     if(button.hasAttribute('data-link-close')){linkDialog.close();return;}
-    if(button.classList.contains('external-link-go')){window.location.href=pendingLink;return;}
+    if(button.classList.contains('external-link-go')){
+      const opened=window.open(pendingLink,'_blank','noopener');
+      if(opened)linkDialog.close();
+      else linkDialog.querySelector('.external-link-status').textContent='Браузер заблокировал новое окно.';
+      return;
+    }
     if(button.classList.contains('external-link-copy'))copyLink();
   });
 
@@ -158,6 +161,6 @@
     }
   });
 
-  if(location.hash.startsWith('#q=')) showSearch({focus:false});
+  if(location.hash.startsWith('#q='))showSearch({focus:false});
   else showHome({scroll:false});
 })();
