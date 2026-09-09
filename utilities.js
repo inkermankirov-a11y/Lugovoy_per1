@@ -33,8 +33,8 @@
       <div class="utilities-list">
         ${item('https://k-ric.gkh43.ru/',favicon('k-ric.gkh43.ru'),'Кировский РИЦ')}
         ${item('https://newlk.vdkanal.ru/',favicon('vdkanal.ru'),'Водоканал')}
-        ${item('https://lkm.esplus.ru/auth/','./energosbyt-logo.svg?v=45','ЭнергосбыТ Плюс')}
-        ${item('https://kabinet.rkc43.ru/kp/Account/LogOn','./capital-repair-logo.svg?v=45','Капитальный ремонт','Фонд капитального ремонта · личный кабинет')}
+        ${item('https://lkm.esplus.ru/auth/','./energosbyt-logo.svg?v=46','ЭнергосбыТ Плюс')}
+        ${item('https://kabinet.rkc43.ru/kp/Account/LogOn','./capital-repair-logo.svg?v=46','Капитальный ремонт','Фонд капитального ремонта · личный кабинет')}
         ${item('https://xn--80ahbpbejkkdefz2i.xn--p1ai/lk',favicon('xn--80ahbpbejkkdefz2i.xn--p1ai'),'Домашний родник')}
       </div>`;
     document.body.appendChild(dialog);
