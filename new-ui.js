@@ -123,9 +123,14 @@
     if(!button)return;
     if(button.hasAttribute('data-link-close')){linkDialog.close();return;}
     if(button.classList.contains('external-link-go')){
-      const opened=window.open(pendingLink,'_blank','noopener');
-      if(opened)linkDialog.close();
-      else linkDialog.querySelector('.external-link-status').textContent='Браузер заблокировал новое окно.';
+      if(touchMode){
+        linkDialog.close();
+        window.location.href=pendingLink;
+      }else{
+        const opened=window.open(pendingLink,'_blank','noopener');
+        if(opened)linkDialog.close();
+        else linkDialog.querySelector('.external-link-status').textContent='Браузер заблокировал новое окно.';
+      }
       return;
     }
     if(button.classList.contains('external-link-copy'))copyLink();
