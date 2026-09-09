@@ -46,13 +46,7 @@ function updateManagementInfo(){
     }
   }
 
-  if(!dialog.querySelector('[data-management-lifts]')){
-    const section=document.createElement('section');
-    section.className='management-card';
-    section.dataset.managementLifts='1';
-    section.innerHTML='<div class="management-label">Заявки по обслуживанию лифтов</div><a class="management-phone" href="tel:+78332476020">8 (8332) 47-60-20</a><a class="management-phone" href="tel:+78332447248">8 (8332) 44-72-48</a>';
-    if(billing)list.insertBefore(section,billing);else list.appendChild(section);
-  }
+  dialog.querySelector('[data-management-lifts]')?.remove();
 
   if(!dialog.querySelector('[data-management-hours]')){
     const section=document.createElement('section');
