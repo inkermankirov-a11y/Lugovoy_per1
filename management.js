@@ -4,6 +4,17 @@ function updateManagementInfo(){
   const list=dialog.querySelector('.management-list');
   if(!list)return;
 
+  const footerAddress=document.querySelector('.footer-address');
+  if(footerAddress)footerAddress.textContent='610007 · Луговой переулок дом 1';
+
+  if(!dialog.querySelector('[data-house-postcode]')){
+    const postcode=document.createElement('div');
+    postcode.dataset.housePostcode='1';
+    postcode.textContent='610007 · Луговой переулок дом 1';
+    postcode.style.cssText='margin:0 0 8px;color:var(--muted);font-size:.82rem;font-weight:700;letter-spacing:.02em';
+    dialog.querySelector('.dialog-top')?.before(postcode);
+  }
+
   if(!dialog.querySelector('[data-management-brand]')){
     const brand=document.createElement('section');
     brand.className='management-brand';
