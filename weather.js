@@ -12,27 +12,27 @@
     .currency-pill{grid-template-rows:auto auto;gap:4px;min-width:72px;padding:8px 11px;text-align:center}
     .currency-code{font-size:.62rem;color:#bcd0d7;letter-spacing:.08em}.currency-value{font-size:.9rem;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}
     @media(max-width:760px){
-      .masthead{padding:16px 12px;gap:6px;align-items:center}
-      .masthead .brand{min-width:0;flex:1 1 auto;gap:7px}
+      .masthead{display:grid!important;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"brand about" "status status";column-gap:10px;row-gap:10px;padding:14px 14px!important;align-items:center}
+      .masthead .brand{grid-area:brand;min-width:0;gap:8px;display:flex;align-items:center}
       .masthead .brand>div{min-width:0}
       .masthead .brand img{width:36px;height:36px;flex:0 0 36px}
       .masthead .brand h1{font-size:1.42rem;line-height:1;white-space:nowrap}
-      .masthead .brand p{display:block!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:118px;font-size:.72rem;line-height:1.15;margin-top:4px;color:#bcd0d7}
-      .header-status{gap:5px;margin-left:0;align-items:center}
-      .weather-pill,.currency-pill{height:50px;border:1px solid #46626f;background:#ffffff0b;border-radius:11px;box-shadow:none}
-      .weather-pill{width:48px;min-width:48px;padding:5px 4px;grid-template-columns:1fr;grid-template-areas:"icon" "temp";gap:2px;text-align:center}
-      .weather-icon{display:block;font-size:.8rem}.weather-temp{font-size:.78rem;white-space:nowrap}.weather-city{display:none}
-      .currency-pill{width:50px;min-width:50px;padding:5px 4px;gap:2px}.currency-code{font-size:.5rem}.currency-value{font-size:.66rem}
-      .quiet{min-height:50px;padding:8px 9px;white-space:nowrap;font-size:.76rem;flex:0 0 auto}
+      .masthead .brand p{display:block!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:none;font-size:.72rem;line-height:1.15;margin-top:4px;color:#bcd0d7}
+      .header-status{grid-area:status;margin:0;display:flex;gap:8px;justify-content:flex-start;align-items:center}
+      .weather-pill,.currency-pill{height:44px;border:1px solid #46626f;background:#ffffff0b;border-radius:10px;box-shadow:none}
+      .weather-pill{width:auto;min-width:78px;padding:5px 9px;display:grid;grid-template-columns:auto auto;grid-template-areas:"icon temp" "city city";column-gap:5px;row-gap:2px;text-align:center}
+      .weather-icon{display:block;font-size:.82rem}.weather-temp{font-size:.8rem;white-space:nowrap}.weather-city{display:block;font-size:.5rem}
+      .currency-pill{width:auto;min-width:70px;padding:5px 9px;gap:2px}.currency-code{font-size:.5rem}.currency-value{font-size:.68rem}
+      .quiet{grid-area:about;min-height:44px;padding:8px 11px;white-space:nowrap;font-size:.76rem;align-self:center}
     }
     @media(max-width:430px){
-      .masthead{padding-left:10px;padding-right:10px;gap:5px}
-      .masthead .brand{gap:6px}.masthead .brand img{width:34px;height:34px;flex-basis:34px}.masthead .brand h1{font-size:1.32rem}.masthead .brand p{max-width:96px;font-size:.68rem}
-      .header-status{gap:4px}.weather-pill{width:44px;min-width:44px}.currency-pill{width:46px;min-width:46px}.weather-temp{font-size:.74rem}.currency-value{font-size:.62rem}.quiet{padding-left:7px;padding-right:7px;font-size:.72rem}
+      .masthead{padding-left:10px!important;padding-right:10px!important;column-gap:7px;row-gap:8px}
+      .masthead .brand{gap:6px}.masthead .brand img{width:34px;height:34px;flex-basis:34px}.masthead .brand h1{font-size:1.32rem}.masthead .brand p{font-size:.67rem}
+      .header-status{gap:6px}.weather-pill{min-width:72px}.currency-pill{min-width:66px}.quiet{padding-left:8px;padding-right:8px;font-size:.72rem}
     }
-    @media(max-width:380px){
-      .masthead .brand h1{font-size:1.22rem}.masthead .brand img{width:31px;height:31px;flex-basis:31px}.masthead .brand p{max-width:82px;font-size:.64rem}
-      .weather-pill{width:41px;min-width:41px}.currency-pill{width:43px;min-width:43px}.quiet{font-size:.68rem;padding-left:5px;padding-right:5px}
+    @media(max-width:360px){
+      .masthead .brand img{width:31px;height:31px;flex-basis:31px}.masthead .brand h1{font-size:1.22rem}.masthead .brand p{font-size:.62rem}
+      .weather-pill{min-width:68px}.currency-pill{min-width:62px}.quiet{font-size:.68rem;padding-left:6px;padding-right:6px}
     }
   `;
   document.head.append(style);
