@@ -4,6 +4,14 @@ function updateManagementInfo(){
   const list=dialog.querySelector('.management-list');
   if(!list)return;
 
+  if(!dialog.querySelector('[data-management-brand]')){
+    const brand=document.createElement('section');
+    brand.className='management-brand';
+    brand.dataset.managementBrand='1';
+    brand.innerHTML=`<div class="management-brand-main"><div class="management-brand-icon" aria-hidden="true">🏢</div><div><div class="management-brand-kicker">Управляющая компания</div><strong>УК «Добродом»</strong></div></div><div class="management-brand-links"><a href="https://dobrodomkirov.ru/" target="_blank" rel="noopener">🌐 Сайт</a><a href="https://vk.ru/dobrodom43" target="_blank" rel="noopener">VK</a><a href="https://max.ru/join/TUP0oTes_nxo5OUev4Uqph3Pr3GXv1iZNdT9oBkWJUU" target="_blank" rel="noopener">MAX</a></div>`;
+    list.before(brand);
+  }
+
   const cards=[...list.querySelectorAll('.management-card')];
   const main=cards[0];
   const office=cards[1];
