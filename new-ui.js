@@ -30,14 +30,6 @@
   searchView.appendChild(searchPanel);
   searchView.appendChild(workspace);
 
-  const brand=document.querySelector('.brand>div');
-  if(brand&&!brand.querySelector('.new-ui-tag')){
-    const tag=document.createElement('div');
-    tag.className='new-ui-tag';
-    tag.textContent='Полезная информация для жителей';
-    brand.appendChild(tag);
-  }
-
   const showHome=({scroll=true}={})=>{
     nav.hidden=false;
     searchView.hidden=true;
