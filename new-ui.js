@@ -89,55 +89,10 @@
     if(dialog instanceof HTMLDialogElement&&!dialog.open)dialog.showModal();
   };
 
-  const linkDialog=document.createElement('dialog');
-  linkDialog.className='external-link-dialog';
-  linkDialog.setAttribute('aria-labelledby','external-link-title');
-  linkDialog.innerHTML=`<div class="dialog-top"><h2 id="external-link-title">Открыть ссылку</h2><button type="button" data-link-close aria-label="Закрыть">✕</button></div><p class="external-link-text"></p><div class="external-link-actions"><button type="button" class="external-link-go">Перейти</button><button type="button" class="external-link-copy">Скопировать ссылку</button></div><p class="external-link-status" role="status" aria-live="polite"></p>`;
-  document.body.appendChild(linkDialog);
-  let pendingLink='';
-
-  const showLinkDialog=(label,url)=>{
-    pendingLink=url;
-    linkDialog.querySelector('#external-link-title').textContent=label;
-    linkDialog.querySelector('.external-link-text').textContent='Выберите действие:';
-    linkDialog.querySelector('.external-link-status').textContent='';
-    if(!linkDialog.open)linkDialog.showModal();
+  const openCommunityLink=url=>{
+    if(mobileDevice)window.location.href=url;
+    else window.open(url,'_blank','noopener');
   };
-
-  const copyLink=async()=>{
-    try{
-      await navigator.clipboard.writeText(pendingLink);
-      linkDialog.querySelector('.external-link-status').textContent='Ссылка скопирована.';
-    }catch{
-      const area=document.createElement('textarea');
-      area.value=pendingLink;
-      area.style.position='fixed';
-      area.style.opacity='0';
-      document.body.appendChild(area);
-      area.select();
-      const ok=document.execCommand('copy');
-      area.remove();
-      linkDialog.querySelector('.external-link-status').textContent=ok?'Ссылка скопирована.':'Не удалось скопировать ссылку.';
-    }
-  };
-
-  linkDialog.addEventListener('click',e=>{
-    const button=e.target.closest('button');
-    if(!button)return;
-    if(button.hasAttribute('data-link-close')){linkDialog.close();return;}
-    if(button.classList.contains('external-link-go')){
-      if(mobileDevice){
-        linkDialog.close();
-        window.location.href=pendingLink;
-      }else{
-        const opened=window.open(pendingLink,'_blank','noopener');
-        if(opened)linkDialog.close();
-        else linkDialog.querySelector('.external-link-status').textContent='Браузер заблокировал новое окно.';
-      }
-      return;
-    }
-    if(button.classList.contains('external-link-copy'))copyLink();
-  });
 
   back.addEventListener('click',()=>showHome());
 
@@ -161,10 +116,10 @@
         openDialog('services-dialog');
         break;
       case 'house-chat':
-        showLinkDialog('Чат дома','https://vk.me/join/HHUNBMEnfqy7_eCGM2uYCdiI69taPCLuqTw=');
+        openCommunityLink('https://vk.me/join/HHUNBMEnfqy7_eCGM2uYCdiI69taPCLuqTw=');
         break;
       case 'house-market':
-        showLinkDialog('Маркет','https://vk.me/join/9NbXV4NK39PGg1cVqDiAGoj5ZmezmaqtHXM=');
+        openCommunityLink('https://vk.me/join/9NbXV4NK39PGg1cVqDiAGoj5ZmezmaqtHXM=');
         break;
     }
   });
