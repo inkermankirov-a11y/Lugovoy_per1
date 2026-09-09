@@ -29,7 +29,7 @@ function prepareServiceCards(){
       dialog:'elevator-detail-dialog',
       title:'Обслуживание лифтов',
       icon:'./elevator-icon.svg?v=13',
-      body:`<div class="passport-grid"><section class="passport-card"><h3>🔧 Обслуживание лифтов</h3><p><strong>Организация:</strong> ООО «Лифтовая Компания»</p><a class="passport-phone" href="tel:+78332497131">8 (8332) 49-71-31</a><a class="service-contact-link" href="mailto:liftst@mail.ru">✉️ liftst@mail.ru</a></section><section class="passport-card passport-note"><h3>🚨 Аварийный телефон</h3><p>На уточнении.</p></section></div>`
+      body:`<div class="passport-grid"><section class="passport-card"><h3>🔧 Обслуживание лифтов</h3><p><strong>Организация:</strong> ООО «Лифтовая Компания»</p><a class="passport-phone" href="tel:+78332497131">8 (8332) 49-71-31</a><a class="service-contact-link" href="mailto:liftst@mail.ru">✉️ liftst@mail.ru</a></section><section class="passport-card"><h3>📞 Заявки по обслуживанию лифтов</h3><a class="passport-phone" href="tel:+78332476020">8 (8332) 47-60-20</a><a class="passport-phone" href="tel:+78332447248">8 (8332) 44-72-48</a></section><section class="passport-card passport-note"><h3>🚨 Аварийный телефон</h3><p>На уточнении.</p></section></div>`
     },
     'intercom-service':{
       subtitle:'ООО «Лифтовая Компания» · обслуживание / подключение домофона',
