@@ -11,7 +11,7 @@
     <button type="button" class="new-home-card nav-house" data-action="management"><span class="nav-emoji">🏢</span><strong>О доме</strong><small>Управляющая компания и контакты</small></button>
     <button type="button" class="new-home-card nav-cam" data-action="services"><span class="nav-emoji">🛠️</span><strong>Обслуживание</strong><small>Обслуживающие организации</small></button>
     <button type="button" class="new-home-card nav-intercom" data-action="utilities"><span class="nav-emoji">🧾</span><strong>Коммуналка</strong><small>Личные кабинеты и оплата</small></button>
-    <button type="button" class="new-home-card nav-utilities" data-action="search"><span class="nav-emoji">🔎</span><strong>Этажи</strong><small>Найти квартиру на этаже</small></button>
+    <button type="button" class="new-home-card nav-utilities" data-action="search"><span class="nav-emoji nav-app-icon" aria-hidden="true"><img src="./icon.svg" alt="" width="40" height="40"></span><strong>Этажи</strong><small>Найти квартиру на этаже</small></button>
     <button type="button" class="new-home-card nav-search" data-service="video-service"><span class="nav-emoji">📹</span><strong>Камеры</strong><small>Доступ и видеозаписи</small></button>
     <button type="button" class="new-home-card nav-services" data-service="intercom-service"><span class="nav-emoji">🔔</span><strong>Домофон</strong><small>Приложение и инструкция</small></button>
   </div>`;
