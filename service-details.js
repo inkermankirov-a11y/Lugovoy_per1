@@ -67,7 +67,7 @@ function prepareServiceCards(){
         </section>
         <section class="passport-card">
           <h3>🎥 Как получить видеозапись с камер</h3>
-          <p>Отправьте запрос на электронную почту или через Telegram.</p>
+          <p>Отправьте запрос на электронную почту или через Max.</p>
           <a class="service-contact-link" href="mailto:domovoi.it@mail.ru">✉️ domovoi.it@mail.ru</a>
           <a class="passport-phone" href="tel:+79229104989">8 (922) 910-49-89</a>
           <p><strong>В запросе укажите:</strong> Ф.И.О., адрес, дату, время, местоположение видеокамеры и электронную почту, на которую нужно отправить запись.</p>
