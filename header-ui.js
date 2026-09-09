@@ -5,13 +5,15 @@
     const switcher=document.querySelector('.lang-switcher');
     if(!about)return;
     const lang=document.documentElement.lang||'ru';
-    about.textContent=labels[lang]||labels.ru;
+    const label=labels[lang]||labels.ru;
+    if(about.textContent!==label)about.textContent=label;
     if(switcher&&about.nextElementSibling!==switcher)about.after(switcher);
   };
   const start=()=>{
     sync();
+    setTimeout(sync,50);
+    setTimeout(sync,300);
     new MutationObserver(sync).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
-    new MutationObserver(sync).observe(document.body,{childList:true,subtree:true});
   };
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
 })();
