@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded',()=>setTimeout(prepareServiceCards,
 
 if(!document.querySelector('script[data-contact-actions]')){
   const script=document.createElement('script');
-  script.src='./contact-actions.js?v=22';
+  script.src='./contact-actions.js?v=26';
   script.defer=true;
   script.dataset.contactActions='1';
   document.head.appendChild(script);
