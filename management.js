@@ -10,8 +10,8 @@ function updateManagementInfo(){
   if(!dialog.querySelector('[data-house-postcode]')){
     const postcode=document.createElement('div');
     postcode.dataset.housePostcode='1';
-    postcode.textContent='610007 · Луговой переулок дом 1';
-    postcode.style.cssText='margin:0 0 8px;color:var(--muted);font-size:.82rem;font-weight:700;letter-spacing:.02em';
+    postcode.className='management-house-address';
+    postcode.innerHTML='<span class="management-house-index">610007</span> · Луговой переулок дом 1';
     dialog.querySelector('.dialog-top')?.before(postcode);
   }
 
@@ -19,7 +19,7 @@ function updateManagementInfo(){
     const brand=document.createElement('section');
     brand.className='management-brand';
     brand.dataset.managementBrand='1';
-    brand.innerHTML=`<div class="management-brand-main"><div class="management-brand-icon" aria-hidden="true">🏢</div><div><div class="management-brand-kicker">Управляющая компания</div><strong>УК «Добродом»</strong></div></div><div class="management-brand-links"><a href="https://dobrodomkirov.ru/" target="_blank" rel="noopener">🌐 Сайт</a><a href="https://vk.ru/dobrodom43" target="_blank" rel="noopener">VK</a><a href="https://max.ru/join/TUP0oTes_nxo5OUev4Uqph3Pr3GXv1iZNdT9oBkWJUU" target="_blank" rel="noopener">MAX</a></div>`;
+    brand.innerHTML=`<div class="management-brand-main"><div class="management-brand-icon" aria-hidden="true">🏢</div><div><div class="management-brand-kicker">Управляющая компания</div><strong>УК «Добродом»</strong></div></div><div class="management-brand-links"><a href="https://dobrodomkirov.ru/" target="_blank" rel="noopener"><span aria-hidden="true">🌐</span><span>Сайт</span></a><a href="https://vk.ru/dobrodom43" target="_blank" rel="noopener" aria-label="VK"><span class="brand-app-icon brand-app-icon-vk" aria-hidden="true">VK</span></a><a href="https://max.ru/join/TUP0oTes_nxo5OUev4Uqph3Pr3GXv1iZNdT9oBkWJUU" target="_blank" rel="noopener" aria-label="MAX"><span class="brand-app-icon brand-app-icon-max" aria-hidden="true">MAX</span></a></div>`;
     list.before(brand);
   }
 
