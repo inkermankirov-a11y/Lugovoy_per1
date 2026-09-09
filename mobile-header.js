@@ -47,3 +47,11 @@
     heading?searchPanel.insertBefore(line,heading):searchPanel.prepend(line);
   }
 })();
+
+if(!document.querySelector('script[data-intercom-downloads]')){
+  const script=document.createElement('script');
+  script.src='./intercom-downloads.js?v=42';
+  script.defer=true;
+  script.dataset.intercomDownloads='1';
+  document.head.appendChild(script);
+}
