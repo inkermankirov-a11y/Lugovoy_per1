@@ -7,7 +7,7 @@
   }
   function ensureBubbleAssets(){
     if(!document.querySelector('link[data-bubble-shooter]')){const link=document.createElement('link');link.rel='stylesheet';link.href='./bubble-shooter.css?v=1';link.dataset.bubbleShooter='1';document.head.appendChild(link);}
-    if(!document.querySelector('script[data-bubble-shooter]')){const script=document.createElement('script');script.src='./bubble-shooter.js?v=1';script.defer=true;script.dataset.bubbleShooter='1';document.head.appendChild(script);}
+    if(!document.querySelector('script[data-bubble-shooter]')){const script=document.createElement('script');script.src='./bubble-shooter.js?v=2';script.defer=true;script.dataset.bubbleShooter='1';document.head.appendChild(script);}
   }
   function apply(){
     const lang=play[document.documentElement.lang]?document.documentElement.lang:'ru';
