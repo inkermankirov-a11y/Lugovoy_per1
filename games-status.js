@@ -1,12 +1,12 @@
 (()=>{
   const play={ru:'Играть',en:'Play',fr:'Jouer',de:'Spielen'};
   const ids=['2048','snake','memory','minesweeper','tictactoe'];
-  function ensureRunAssets(){
-    if(!document.querySelector('link[data-lugovoy-run]')){
-      const link=document.createElement('link');link.rel='stylesheet';link.href='./lugovoy-run.css?v=1';link.dataset.lugovoyRun='1';document.head.appendChild(link);
+  function ensureCheckersAssets(){
+    if(!document.querySelector('link[data-checkers]')){
+      const link=document.createElement('link');link.rel='stylesheet';link.href='./checkers.css?v=1';link.dataset.checkers='1';document.head.appendChild(link);
     }
-    if(!document.querySelector('script[data-lugovoy-run]')){
-      const script=document.createElement('script');script.src='./lugovoy-run.js?v=1';script.defer=true;script.dataset.lugovoyRun='1';document.head.appendChild(script);
+    if(!document.querySelector('script[data-checkers]')){
+      const script=document.createElement('script');script.src='./checkers.js?v=1';script.defer=true;script.dataset.checkers='1';document.head.appendChild(script);
     }
   }
   function apply(){
@@ -18,9 +18,9 @@
       const badge=card.querySelector('.game-soon');
       if(badge)badge.textContent=play[lang];
     });
-    ensureRunAssets();
+    ensureCheckersAssets();
   }
-  document.addEventListener('click',e=>{if(e.target.closest('[data-action="games"],.games-back,.memory-back,.mines-back,.ttt-back,.snake-back,.game2048-back,.run-back'))setTimeout(apply,0);},true);
+  document.addEventListener('click',e=>{if(e.target.closest('[data-action="games"],.games-back,.memory-back,.mines-back,.ttt-back,.snake-back,.game2048-back,.checkers-back'))setTimeout(apply,0);},true);
   new MutationObserver(()=>requestAnimationFrame(apply)).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(apply,0));else setTimeout(apply,0);
   window.applyGameStatuses=apply;
