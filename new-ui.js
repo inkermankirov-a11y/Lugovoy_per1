@@ -126,4 +126,11 @@
 
   if(location.hash.startsWith('#q='))showSearch({focus:false});
   else showHome({scroll:false});
+
+  if(!document.querySelector('link[data-games-style]')){
+    const link=document.createElement('link');link.rel='stylesheet';link.href='./games.css?v=1';link.dataset.gamesStyle='1';document.head.appendChild(link);
+  }
+  if(!document.querySelector('script[data-games-ui]')){
+    const script=document.createElement('script');script.src='./games.js?v=1';script.dataset.gamesUi='1';document.head.appendChild(script);
+  }
 })();
