@@ -78,6 +78,8 @@ function prepareServiceCards(){
         </section>
         <section class="passport-card">
           <h3>📱 Регистрация в приложении «Наш дом»</h3>
+          <a class="service-contact-link store-link nashdom-store-link" href="https://play.google.com/store/apps/details?id=sputnik.axmor.com" target="_blank" rel="noopener noreferrer"><img src="./google-play-icon.svg?v=25" alt="Google Play" width="24" height="24"><span>Google Play · Nash Dom</span></a>
+          <a class="service-contact-link store-link nashdom-store-link" href="https://apps.apple.com/app/id1371300967" target="_blank" rel="noopener noreferrer"><img src="./app-store-icon.svg?v=25" alt="App Store" width="24" height="24"><span>App Store · Nash Dom</span></a>
           <ol class="lift-rules">
             <li>Скачайте и установите мобильное приложение «Наш дом».</li>
             <li>После запуска приложения введите номер телефона для регистрации.</li>
