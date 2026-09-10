@@ -19,8 +19,7 @@
   `;
   document.head.appendChild(style);
 
-  const favicon=domain=>`https://www.google.com/s2/favicons?domain=${encodeURIComponent(domain)}&sz=64`;
-  const item=(href,icon,title,subtitle='Личный кабинет')=>`<a class="utility-link" href="${href}" target="_blank" rel="noopener noreferrer"><span class="utility-link-main"><span class="utility-site-icon" aria-hidden="true"><img src="${icon}" alt="" width="44" height="36"></span><span class="utility-link-text">${title}<small>${subtitle}</small></span></span></a>`;
+  const item=(href,icon,title,subtitle='Личный кабинет')=>`<a class="utility-link" href="${href}" target="_blank" rel="noopener noreferrer"><span class="utility-link-main"><span class="utility-site-icon" aria-hidden="true"><img src="${icon}" alt="" width="44" height="36" decoding="async"></span><span class="utility-link-text">${title}<small>${subtitle}</small></span></span></a>`;
 
   function ensureDialog(){
     let dialog=document.getElementById(dialogId);
@@ -31,11 +30,11 @@
       <div class="dialog-top"><h2>Коммуналка</h2><button data-close aria-label="Закрыть">✕</button></div>
       <p class="hint">Личные кабинеты и сервисы коммунальных организаций.</p>
       <div class="utilities-list">
-        ${item('https://k-ric.gkh43.ru/',favicon('k-ric.gkh43.ru'),'Кировский РИЦ')}
-        ${item('https://newlk.vdkanal.ru/',favicon('vdkanal.ru'),'Водоканал')}
+        ${item('https://k-ric.gkh43.ru/','./ric-logo.svg?v=1','Кировский РИЦ')}
+        ${item('https://newlk.vdkanal.ru/','./vodokanal-logo.svg?v=1','Водоканал')}
         ${item('https://lkm.esplus.ru/auth/','./energosbyt-logo.svg?v=46','ЭнергосбыТ Плюс')}
         ${item('https://kabinet.rkc43.ru/kp/Account/LogOn','./capital-repair-logo.svg?v=46','Капитальный ремонт','Фонд капитального ремонта · личный кабинет')}
-        ${item('https://xn--80ahbpbejkkdefz2i.xn--p1ai/lk',favicon('xn--80ahbpbejkkdefz2i.xn--p1ai'),'Домашний родник')}
+        ${item('https://xn--80ahbpbejkkdefz2i.xn--p1ai/lk','./rodnik-logo.svg?v=1','Домашний родник')}
       </div>`;
     document.body.appendChild(dialog);
     dialog.querySelector('[data-close]').addEventListener('click',()=>dialog.close());
