@@ -23,6 +23,13 @@
   const start=()=>{
     sync();
     new MutationObserver(sync).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+    if(!document.querySelector('script[data-i18n-about]')){
+      const s=document.createElement('script');
+      s.src='./i18n-about.js?v=1';
+      s.defer=true;
+      s.dataset.i18nAbout='1';
+      document.head.appendChild(s);
+    }
   };
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 })();
