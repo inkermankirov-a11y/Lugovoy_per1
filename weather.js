@@ -81,7 +81,7 @@
   const overlay=document.createElement('div');
   overlay.className='forecast-overlay';
   overlay.setAttribute('aria-hidden','true');
-  overlay.innerHTML=`<section class="forecast-panel" role="dialog" aria-modal="true" aria-labelledby="forecast-title"><div class="forecast-head"><div><h2 id="forecast-title">Погода в Кирове · 7 дней</h2><div class="forecast-sub">Прогноз Open-Meteo</div></div><button type="button" class="forecast-close" aria-label="Закрыть прогноз">✕</button></div><div class="forecast-body"><div class="forecast-loading"><div class="forecast-spinner"></div>Загружаю прогноз…</div></div></section>`;
+  overlay.innerHTML=`<section class="forecast-panel" role="dialog" aria-modal="true" aria-labelledby="forecast-title"><div class="forecast-head"><div><h2 id="forecast-title">Погода в Кирове · 7 дней</h2><div class="forecast-sub">Прогноз AZ.RU</div></div><button type="button" class="forecast-close" aria-label="Закрыть прогноз">✕</button></div><div class="forecast-body"><div class="forecast-loading"><div class="forecast-spinner"></div>Загружаю прогноз…</div></div></section>`;
   document.body.appendChild(overlay);
 
   const icon=weather.querySelector('.weather-icon');
@@ -106,6 +106,84 @@
     if(code>=95)return['⛈️','гроза'];
     return['🌡️','погода'];
   }
+  function conditionFromText(value,isDay=true){
+    const text=String(value??'').trim().toLowerCase();
+    if(!text)return['🌡️','погода'];
+    if(/гроз|thunder/.test(text))return['⛈️','гроза'];
+    if(/снег|snow|метел/.test(text))return['🌨️','снег'];
+    if(/лив|shower/.test(text))return['🌦️','ливни'];
+    if(/дожд|rain/.test(text))return['🌧️','дождь'];
+    if(/морос|drizzle/.test(text))return['🌦️','морось'];
+    if(/туман|fog|mist/.test(text))return['🌫️','туман'];
+    if(/пасмур|overcast/.test(text))return['☁️','пасмурно'];
+    if(/облач|cloud/.test(text))return['⛅','облачно'];
+    if(/ясн|clear|sun/.test(text))return[isDay?'☀️':'🌙','ясно'];
+    return['🌡️',String(value)];
+  }
+
+  function conditionAny(value,isDay=true){
+    const numeric=Number(value);
+    return Number.isFinite(numeric)&&String(value).trim()!==''?condition(numeric,isDay):conditionFromText(value,isDay);
+  }
+
+  const num=(...values)=>{
+    for(const value of values){
+      const n=Number(value);
+      if(Number.isFinite(n))return n;
+    }
+    return null;
+  };
+  const first=(...values)=>values.find(v=>v!==undefined&&v!==null&&v!=='');
+  const isoDate=value=>{
+    if(!value)return new Date().toISOString().slice(0,10);
+    const str=String(value);
+    if(/^\d{4}-\d{2}-\d{2}/.test(str))return str.slice(0,10);
+    const date=new Date(value);
+    return Number.isNaN(date.getTime())?new Date().toISOString().slice(0,10):date.toISOString().slice(0,10);
+  };
+
+  function normalizeAz(data){
+    if(!data||typeof data!=='object')return null;
+    const rawCurrent=data.current||data.now||data.fact||data.weather||{};
+    const currentTemp=num(rawCurrent.temperature_2m,rawCurrent.temperature,rawCurrent.temp,rawCurrent.t);
+    if(currentTemp===null)return null;
+    const currentCondition=first(rawCurrent.weather_code,rawCurrent.weathercode,rawCurrent.code,rawCurrent.condition,rawCurrent.description,rawCurrent.text,rawCurrent.weather);
+    const daylight=first(rawCurrent.is_day,rawCurrent.daytime,rawCurrent.day);
+    const current={
+      temperature_2m:currentTemp,
+      apparent_temperature:num(rawCurrent.apparent_temperature,rawCurrent.feels_like,rawCurrent.feelsLike,rawCurrent.feels,currentTemp)??currentTemp,
+      weather_code:currentCondition,
+      is_day:typeof daylight==='string'?/^(1|true|d|day|день)$/i.test(daylight):daylight===undefined?true:Boolean(daylight)
+    };
+
+    const rawDaily=data.daily||data.forecast||data.forecasts||data.days||[];
+    let daily=null;
+    if(Array.isArray(rawDaily)){
+      const rows=rawDaily.slice(0,7);
+      daily={
+        time:rows.map((d,i)=>isoDate(first(d.date,d.day,d.time,d.datetime,d.dt,Date.now()+i*86400000))),
+        weather_code:rows.map(d=>first(d.weather_code,d.weathercode,d.code,d.condition,d.description,d.text,d.weather,'')),
+        temperature_2m_max:rows.map(d=>num(d.temperature_2m_max,d.temp_max,d.max_temp,d.temperature_max,d.max,d.day?.temp_max,d.day?.temperature)??currentTemp),
+        temperature_2m_min:rows.map(d=>num(d.temperature_2m_min,d.temp_min,d.min_temp,d.temperature_min,d.min,d.night?.temp_min,d.night?.temperature)??currentTemp),
+        precipitation_probability_max:rows.map(d=>num(d.precipitation_probability_max,d.precipitation_probability,d.rain_probability,d.pop,d.precipitation_probability_percent,0)??0),
+        wind_speed_10m_max:rows.map(d=>num(d.wind_speed_10m_max,d.wind_speed_max,d.max_wind,d.wind_speed,d.wind,0)??0)
+      };
+    }else if(rawDaily&&typeof rawDaily==='object'){
+      const times=rawDaily.time||rawDaily.date||rawDaily.dates;
+      if(Array.isArray(times)){
+        daily={
+          time:times.slice(0,7).map(isoDate),
+          weather_code:(rawDaily.weather_code||rawDaily.weathercode||rawDaily.code||rawDaily.condition||rawDaily.description||[]).slice(0,7),
+          temperature_2m_max:(rawDaily.temperature_2m_max||rawDaily.temp_max||rawDaily.max_temp||rawDaily.temperature_max||[]).slice(0,7),
+          temperature_2m_min:(rawDaily.temperature_2m_min||rawDaily.temp_min||rawDaily.min_temp||rawDaily.temperature_min||[]).slice(0,7),
+          precipitation_probability_max:(rawDaily.precipitation_probability_max||rawDaily.precipitation_probability||rawDaily.rain_probability||rawDaily.pop||[]).slice(0,7),
+          wind_speed_10m_max:(rawDaily.wind_speed_10m_max||rawDaily.wind_speed_max||rawDaily.max_wind||rawDaily.wind_speed||[]).slice(0,7)
+        };
+      }
+    }
+    return{current,daily};
+  }
+
   const signed=n=>`${Number(n)>0?'+':''}${Math.round(Number(n))}°`;
   const dayName=(iso,i)=>i===0?'Сегодня':new Intl.DateTimeFormat('ru-RU',{weekday:'short'}).format(new Date(iso+'T12:00:00')).replace('.','');
   const shortDate=iso=>new Intl.DateTimeFormat('ru-RU',{day:'numeric',month:'short'}).format(new Date(iso+'T12:00:00')).replace('.','');
@@ -114,16 +192,16 @@
     if(!weatherData?.daily?.time?.length){body.innerHTML='<div class="forecast-loading">Прогноз временно недоступен.</div>';return}
     const c=weatherData.current||{};
     const hasCurrent=Number.isFinite(Number(c.temperature_2m));
-    const [currentIcon,currentText]=condition(Number(c.weather_code),Boolean(c.is_day));
+    const [currentIcon,currentText]=conditionAny(c.weather_code,Boolean(c.is_day));
     const d=weatherData.daily;
     const rows=d.time.slice(0,7).map((date,i)=>{
-      const [sym,desc]=condition(Number(d.weather_code[i]),true);
+      const [sym,desc]=conditionAny(d.weather_code[i],true);
       const rain=Math.round(Number(d.precipitation_probability_max?.[i]??0));
       const wind=Math.round(Number(d.wind_speed_10m_max?.[i]??0));
       return `<article class="forecast-day"><div class="forecast-date"><strong>${dayName(date,i)}</strong><span>${shortDate(date)}</span></div><div class="forecast-day-icon" aria-hidden="true">${sym}</div><div class="forecast-desc">${desc}</div><div class="forecast-temp">${signed(d.temperature_2m_max[i])}<span class="min">${signed(d.temperature_2m_min[i])}</span></div><div class="forecast-meta"><span>💧 ${rain}%</span><span>💨 ${wind} км/ч</span></div></article>`;
     }).join('');
     const currentBlock=hasCurrent?`<div class="forecast-current"><div class="forecast-current-icon" aria-hidden="true">${currentIcon}</div><div><div class="forecast-current-temp">${signed(c.temperature_2m)}</div><div class="forecast-current-text">${currentText}</div></div><div class="forecast-current-feels">Ощущается как <strong>${signed(c.apparent_temperature)}</strong></div></div>`:'';
-    body.innerHTML=`${currentBlock}<div class="forecast-days">${rows}</div><div class="forecast-source">Данные: Open-Meteo · прогноз обновляется автоматически</div>`;
+    body.innerHTML=`${currentBlock}<div class="forecast-days">${rows}</div><div class="forecast-source">Данные: AZ.RU · прогноз обновляется автоматически</div>`;
   }
 
   function openForecast(){
@@ -151,7 +229,7 @@
     weatherData.current=current;
     const value=Math.round(Number(current.temperature_2m));
     const feels=Math.round(Number(current.apparent_temperature));
-    const [symbol,text]=condition(Number(current.weather_code),Boolean(current.is_day));
+    const [symbol,text]=conditionAny(current.weather_code,Boolean(current.is_day));
     icon.textContent=symbol;
     temp.textContent=`${value>0?'+':''}${value}°`;
     weather.title=`Киров: ${text}, ${value>0?'+':''}${value}°, ощущается как ${feels>0?'+':''}${feels}°${cached?' · сохранённые данные':''}. Нажмите для прогноза на 7 дней.`;
@@ -161,7 +239,7 @@
 
   function loadCachedWeather(){
     try{
-      const saved=JSON.parse(localStorage.getItem('etazhi-weather-current')||'null');
+      const saved=JSON.parse(localStorage.getItem('etazhi-weather-current-az')||'null');
       if(saved&&Date.now()-Number(saved.saved)<12*60*60*1000&&applyCurrentWeather(saved.current,true))return true;
     }catch{}
     return false;
@@ -169,7 +247,7 @@
 
   function loadCachedForecast(){
     try{
-      const saved=JSON.parse(localStorage.getItem('etazhi-weather-forecast')||'null');
+      const saved=JSON.parse(localStorage.getItem('etazhi-weather-forecast-az')||'null');
       if(saved&&Date.now()-Number(saved.saved)<18*60*60*1000&&saved.daily?.time?.length){
         weatherData.daily=saved.daily;
         return true;
@@ -189,19 +267,16 @@
   }
 
   async function loadWeather(){
-    const urls=[
-      'https://api.open-meteo.com/v1/forecast?latitude=58.6036&longitude=49.6680&current=temperature_2m,apparent_temperature,weather_code,is_day&temperature_unit=celsius&timezone=Europe%2FMoscow',
-      'https://api.open-meteo.com/v1/forecast?latitude=58.6036&longitude=49.6680&current=temperature_2m,apparent_temperature,weather_code,is_day&timezone=auto'
-    ];
-    for(const url of urls){
-      try{
-        const data=await fetchJson(url);
-        if(!applyCurrentWeather(data?.current))throw new Error('weather');
-        localStorage.setItem('etazhi-weather-current',JSON.stringify({current:data.current,saved:Date.now()}));
-        if(overlay.classList.contains('open'))renderForecast();
-        return data;
-      }catch{}
-    }
+    try{
+      const data=await fetchJson('https://az.ru/api/weather.php?city=Kirov',10000);
+      const normalized=normalizeAz(data);
+      if(!normalized?.current||!applyCurrentWeather(normalized.current))throw new Error('weather');
+      if(normalized.daily?.time?.length)weatherData.daily=normalized.daily;
+      localStorage.setItem('etazhi-weather-current-az',JSON.stringify({current:normalized.current,saved:Date.now()}));
+      if(normalized.daily?.time?.length)localStorage.setItem('etazhi-weather-forecast-az',JSON.stringify({daily:normalized.daily,saved:Date.now()}));
+      if(overlay.classList.contains('open'))renderForecast();
+      return normalized;
+    }catch{}
     if(loadCachedWeather()){
       if(overlay.classList.contains('open'))renderForecast();
       return weatherData;
@@ -215,19 +290,15 @@
 
   async function loadForecast(){
     body.innerHTML='<div class="forecast-loading"><div class="forecast-spinner"></div>Загружаю прогноз…</div>';
-    const urls=[
-      'https://api.open-meteo.com/v1/forecast?latitude=58.6036&longitude=49.6680&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max&forecast_days=7&temperature_unit=celsius&wind_speed_unit=kmh&timezone=Europe%2FMoscow',
-      'https://api.open-meteo.com/v1/forecast?latitude=58.6036&longitude=49.6680&daily=weather_code,temperature_2m_max,temperature_2m_min,wind_speed_10m_max&forecast_days=7&temperature_unit=celsius&wind_speed_unit=kmh&timezone=auto'
-    ];
-    for(const url of urls){
-      try{
-        const data=await fetchJson(url,12000);
-        if(!data?.daily?.time?.length)throw new Error('forecast');
-        weatherData.daily=data.daily;
-        localStorage.setItem('etazhi-weather-forecast',JSON.stringify({daily:data.daily,saved:Date.now()}));
-        return data;
-      }catch{}
-    }
+    try{
+      const data=await fetchJson('https://az.ru/api/weather.php?city=Kirov',12000);
+      const normalized=normalizeAz(data);
+      if(normalized?.current)applyCurrentWeather(normalized.current);
+      if(!normalized?.daily?.time?.length)throw new Error('forecast');
+      weatherData.daily=normalized.daily;
+      localStorage.setItem('etazhi-weather-forecast-az',JSON.stringify({daily:normalized.daily,saved:Date.now()}));
+      return normalized;
+    }catch{}
     if(loadCachedForecast())return weatherData;
     return null;
   }
