@@ -135,8 +135,6 @@ function prepareServiceCards(){
       icon:'./heat-service-icon.svg?v=117',
       body:`<div class="passport-grid">
         <section class="passport-card">
-          <h3>♨️ Тепловая справочная служба</h3>
-          <p>Сервис Т Плюс для вопросов по отоплению и горячей воде.</p>
           <a class="passport-phone" href="tel:+78007001846">8 (800) 700-18-46</a>
           <a class="service-contact-link" href="https://tss.tplusgroup.ru/" target="_blank" rel="noopener noreferrer">🌐 Открыть сервис</a>
         </section>
