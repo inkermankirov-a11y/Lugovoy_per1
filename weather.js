@@ -81,7 +81,7 @@
   const overlay=document.createElement('div');
   overlay.className='forecast-overlay';
   overlay.setAttribute('aria-hidden','true');
-  overlay.innerHTML=`<section class="forecast-panel" role="dialog" aria-modal="true" aria-labelledby="forecast-title"><div class="forecast-head"><div><h2 id="forecast-title">Погода в Кирове · 7 дней</h2><div class="forecast-sub">Прогноз AZ.RU</div></div><button type="button" class="forecast-close" aria-label="Закрыть прогноз">✕</button></div><div class="forecast-body"><div class="forecast-loading"><div class="forecast-spinner"></div>Загружаю прогноз…</div></div></section>`;
+  overlay.innerHTML=`<section class="forecast-panel" role="dialog" aria-modal="true" aria-labelledby="forecast-title"><div class="forecast-head"><div><h2 id="forecast-title">Погода в Кирове · 7 дней</h2><div class="forecast-sub">Прогноз на 7 дней</div></div><button type="button" class="forecast-close" aria-label="Закрыть прогноз">✕</button></div><div class="forecast-body"><div class="forecast-loading"><div class="forecast-spinner"></div>Загружаю прогноз…</div></div></section>`;
   document.body.appendChild(overlay);
 
   const icon=weather.querySelector('.weather-icon');
@@ -201,7 +201,7 @@
       return `<article class="forecast-day"><div class="forecast-date"><strong>${dayName(date,i)}</strong><span>${shortDate(date)}</span></div><div class="forecast-day-icon" aria-hidden="true">${sym}</div><div class="forecast-desc">${desc}</div><div class="forecast-temp">${signed(d.temperature_2m_max[i])}<span class="min">${signed(d.temperature_2m_min[i])}</span></div><div class="forecast-meta"><span>💧 ${rain}%</span><span>💨 ${wind} км/ч</span></div></article>`;
     }).join('');
     const currentBlock=hasCurrent?`<div class="forecast-current"><div class="forecast-current-icon" aria-hidden="true">${currentIcon}</div><div><div class="forecast-current-temp">${signed(c.temperature_2m)}</div><div class="forecast-current-text">${currentText}</div></div><div class="forecast-current-feels">Ощущается как <strong>${signed(c.apparent_temperature)}</strong></div></div>`:'';
-    body.innerHTML=`${currentBlock}<div class="forecast-days">${rows}</div><div class="forecast-source">Данные: AZ.RU · прогноз обновляется автоматически</div>`;
+    body.innerHTML=`${currentBlock}<div class="forecast-days">${rows}</div><div class="forecast-source">Данные обновляются автоматически</div>`;
   }
 
   function openForecast(){
@@ -239,7 +239,7 @@
 
   function loadCachedWeather(){
     try{
-      const saved=JSON.parse(localStorage.getItem('etazhi-weather-current-az')||'null');
+      const saved=JSON.parse(localStorage.getItem('etazhi-weather-current-local')||'null');
       if(saved&&Date.now()-Number(saved.saved)<12*60*60*1000&&applyCurrentWeather(saved.current,true))return true;
     }catch{}
     return false;
@@ -247,7 +247,7 @@
 
   function loadCachedForecast(){
     try{
-      const saved=JSON.parse(localStorage.getItem('etazhi-weather-forecast-az')||'null');
+      const saved=JSON.parse(localStorage.getItem('etazhi-weather-forecast-local')||'null');
       if(saved&&Date.now()-Number(saved.saved)<18*60*60*1000&&saved.daily?.time?.length){
         weatherData.daily=saved.daily;
         return true;
@@ -266,18 +266,25 @@
     }finally{clearTimeout(timer)}
   }
 
+  async function loadLocalWeatherSnapshot(){
+    const data=await fetchJson(`./weather-data.json?t=${Date.now()}`,7000);
+    if(!data?.current||!data?.daily?.time?.length)throw new Error('weather snapshot');
+    return data;
+  }
+
   async function loadWeather(){
     try{
-      const data=await fetchJson('https://az.ru/api/weather.php?city=Kirov',10000);
-      const normalized=normalizeAz(data);
-      if(!normalized?.current||!applyCurrentWeather(normalized.current))throw new Error('weather');
-      if(normalized.daily?.time?.length)weatherData.daily=normalized.daily;
-      localStorage.setItem('etazhi-weather-current-az',JSON.stringify({current:normalized.current,saved:Date.now()}));
-      if(normalized.daily?.time?.length)localStorage.setItem('etazhi-weather-forecast-az',JSON.stringify({daily:normalized.daily,saved:Date.now()}));
+      const data=await loadLocalWeatherSnapshot();
+      weatherData.current=data.current;
+      weatherData.daily=data.daily;
+      if(!applyCurrentWeather(data.current))throw new Error('weather');
+      localStorage.setItem('etazhi-weather-current-local',JSON.stringify({current:data.current,saved:Date.now()}));
+      localStorage.setItem('etazhi-weather-forecast-local',JSON.stringify({daily:data.daily,saved:Date.now()}));
       if(overlay.classList.contains('open'))renderForecast();
-      return normalized;
+      return data;
     }catch{}
     if(loadCachedWeather()){
+      loadCachedForecast();
       if(overlay.classList.contains('open'))renderForecast();
       return weatherData;
     }
@@ -291,13 +298,13 @@
   async function loadForecast(){
     body.innerHTML='<div class="forecast-loading"><div class="forecast-spinner"></div>Загружаю прогноз…</div>';
     try{
-      const data=await fetchJson('https://az.ru/api/weather.php?city=Kirov',12000);
-      const normalized=normalizeAz(data);
-      if(normalized?.current)applyCurrentWeather(normalized.current);
-      if(!normalized?.daily?.time?.length)throw new Error('forecast');
-      weatherData.daily=normalized.daily;
-      localStorage.setItem('etazhi-weather-forecast-az',JSON.stringify({daily:normalized.daily,saved:Date.now()}));
-      return normalized;
+      const data=await loadLocalWeatherSnapshot();
+      weatherData.current=data.current;
+      weatherData.daily=data.daily;
+      applyCurrentWeather(data.current);
+      localStorage.setItem('etazhi-weather-current-local',JSON.stringify({current:data.current,saved:Date.now()}));
+      localStorage.setItem('etazhi-weather-forecast-local',JSON.stringify({daily:data.daily,saved:Date.now()}));
+      return data;
     }catch{}
     if(loadCachedForecast())return weatherData;
     return null;
