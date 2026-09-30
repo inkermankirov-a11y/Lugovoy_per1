@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Тепловая справочная служба">
+  <rect width="64" height="64" rx="16" fill="#fff1e8"/>
+  <path d="M20 20v24M26 16v32M32 20v24M38 16v32M44 20v24" stroke="#f07a24" stroke-width="4" stroke-linecap="round"/>
+  <path d="M14 24h36M14 40h36" stroke="#8b5a3c" stroke-width="3" stroke-linecap="round"/>
+  <path d="M49 17c4 5 5 9 2 13" fill="none" stroke="#f07a24" stroke-width="3" stroke-linecap="round"/>
+</svg>
