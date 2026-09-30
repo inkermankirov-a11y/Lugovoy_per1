@@ -1,0 +1,55 @@
+name: Update weather data
+
+on:
+  push:
+    paths:
+      - '.github/workflows/update-weather.yml'
+  schedule:
+    - cron: '7,37 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-weather-data
+  cancel-in-progress: true
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download weather for Kirov
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL='https://api.open-meteo.com/v1/forecast?latitude=58.6036&longitude=49.6680&current=temperature_2m,apparent_temperature,weather_code,is_day&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max&forecast_days=7&temperature_unit=celsius&wind_speed_unit=kmh&timezone=Europe%2FMoscow'
+          curl --fail --silent --show-error --location --retry 4 --retry-delay 3 --connect-timeout 12 --max-time 35 "$URL" -o weather-data.tmp.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('weather-data.tmp.json')
+          data=json.loads(p.read_text())
+          if not data.get('current') or not data.get('daily',{}).get('time'):
+              raise SystemExit('Weather response is incomplete')
+          data['_updated_utc']=__import__('datetime').datetime.now(__import__('datetime').timezone.utc).isoformat()
+          Path('weather-data.json').write_text(json.dumps(data, ensure_ascii=False, separators=(',',':'))+'\n')
+          p.unlink(missing_ok=True)
+          PY
+
+      - name: Commit weather snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add weather-data.json
+          if git diff --cached --quiet; then
+            echo "Weather data has not changed"
+            exit 0
+          fi
+          git commit -m "Update weather data"
+          git push
