@@ -28,7 +28,7 @@ function ensureHeatSupportCard(){
   button.type='button';
   button.id='heat-service';
   button.className='service-entry';
-  button.innerHTML=`<span class="service-icon service-image-icon" aria-hidden="true"><img src="./heat-service-icon.svg?v=116" alt="" width="50" height="50"></span><span><strong>Тепловая справочная служба</strong><small>Т Плюс · отопление и горячая вода</small></span>`;
+  button.innerHTML=`<span class="service-icon service-image-icon" aria-hidden="true"><img src="./heat-service-icon.svg?v=117" alt="" width="50" height="50"></span><span><strong>Тепловая справочная служба</strong><small>Т Плюс · отопление и горячая вода</small></span>`;
   list.appendChild(button);
 }
 
@@ -132,11 +132,12 @@ function prepareServiceCards(){
       subtitle:'Т Плюс · отопление и горячая вода',
       dialog:'heat-detail-dialog',
       title:'Тепловая справочная служба',
-      icon:'./heat-service-icon.svg?v=116',
+      icon:'./heat-service-icon.svg?v=117',
       body:`<div class="passport-grid">
         <section class="passport-card">
           <h3>♨️ Тепловая справочная служба</h3>
           <p>Сервис Т Плюс для вопросов по отоплению и горячей воде.</p>
+          <a class="passport-phone" href="tel:+78007001846">8 (800) 700-18-46</a>
           <a class="service-contact-link" href="https://tss.tplusgroup.ru/" target="_blank" rel="noopener noreferrer">🌐 Открыть сервис</a>
         </section>
         <section class="passport-card">
