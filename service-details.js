@@ -21,8 +21,20 @@ function ensureVideoSurveillanceCard(){
   list.appendChild(button);
 }
 
+function ensureHeatSupportCard(){
+  const list=document.querySelector('#services-dialog .service-list');
+  if(!list||document.getElementById('heat-service'))return;
+  const button=document.createElement('button');
+  button.type='button';
+  button.id='heat-service';
+  button.className='service-entry';
+  button.innerHTML=`<span class="service-icon service-image-icon" aria-hidden="true"><img src="./heat-service-icon.svg?v=116" alt="" width="50" height="50"></span><span><strong>Тепловая справочная служба</strong><small>Т Плюс · отопление и горячая вода</small></span>`;
+  list.appendChild(button);
+}
+
 function prepareServiceCards(){
   ensureVideoSurveillanceCard();
+  ensureHeatSupportCard();
   const specs={
     'elevator-service':{
       subtitle:'ООО «ЛифтСтандарт» · обслуживание лифтов',
@@ -115,6 +127,29 @@ function prepareServiceCards(){
       title:'Домашний родник',
       icon:'./domashniy-rodnik.svg?v=13',
       body:`<div class="passport-grid"><section class="passport-card"><h3>💧 Домашний родник</h3><p>🏢 <strong>Адрес:</strong> г. Киров, ул. Пугачёва, д. 9</p><a class="passport-phone" href="tel:+78332413770">+7 (8332) 41-37-70</a><a class="service-contact-link" href="https://xn--80ahbpbejkkdefz2i.xn--p1ai/" target="_blank" rel="noopener">🌐 Открыть сайт</a></section></div>`
+    },
+    'heat-service':{
+      subtitle:'Т Плюс · отопление и горячая вода',
+      dialog:'heat-detail-dialog',
+      title:'Тепловая справочная служба',
+      icon:'./heat-service-icon.svg?v=116',
+      body:`<div class="passport-grid">
+        <section class="passport-card">
+          <h3>♨️ Тепловая справочная служба</h3>
+          <p>Сервис Т Плюс для вопросов по отоплению и горячей воде.</p>
+          <a class="service-contact-link" href="https://tss.tplusgroup.ru/" target="_blank" rel="noopener noreferrer">🌐 Открыть сервис</a>
+        </section>
+        <section class="passport-card">
+          <h3>Что можно сделать</h3>
+          <ul class="heat-service-list">
+            <li>Узнать график отключения горячей воды на время гидравлических испытаний.</li>
+            <li>Узнать о ремонтных работах на тепловых сетях.</li>
+            <li>Подать заявку при отсутствии отопления или горячей воды.</li>
+            <li>Отследить статус поданной заявки.</li>
+            <li>Получить ответы на вопросы по качеству отопления и горячей воды.</li>
+          </ul>
+        </section>
+      </div>`
     },
     'video-service':{
       subtitle:'«Домовой IT» · доступ и получение видеозаписей',
