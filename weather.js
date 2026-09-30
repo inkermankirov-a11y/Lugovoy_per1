@@ -90,7 +90,7 @@
   const panel=overlay.querySelector('.forecast-panel');
   const body=overlay.querySelector('.forecast-body');
   const closeButton=overlay.querySelector('.forecast-close');
-  let weatherData=null;
+  let weatherData={current:null,daily:null};
 
   function condition(code,isDay=true){
     if(code===0)return[isDay?'☀️':'🌙','ясно'];
@@ -113,6 +113,7 @@
   function renderForecast(){
     if(!weatherData?.daily?.time?.length){body.innerHTML='<div class="forecast-loading">Прогноз временно недоступен.</div>';return}
     const c=weatherData.current||{};
+    const hasCurrent=Number.isFinite(Number(c.temperature_2m));
     const [currentIcon,currentText]=condition(Number(c.weather_code),Boolean(c.is_day));
     const d=weatherData.daily;
     const rows=d.time.slice(0,7).map((date,i)=>{
@@ -121,7 +122,8 @@
       const wind=Math.round(Number(d.wind_speed_10m_max?.[i]??0));
       return `<article class="forecast-day"><div class="forecast-date"><strong>${dayName(date,i)}</strong><span>${shortDate(date)}</span></div><div class="forecast-day-icon" aria-hidden="true">${sym}</div><div class="forecast-desc">${desc}</div><div class="forecast-temp">${signed(d.temperature_2m_max[i])}<span class="min">${signed(d.temperature_2m_min[i])}</span></div><div class="forecast-meta"><span>💧 ${rain}%</span><span>💨 ${wind} км/ч</span></div></article>`;
     }).join('');
-    body.innerHTML=`<div class="forecast-current"><div class="forecast-current-icon" aria-hidden="true">${currentIcon}</div><div><div class="forecast-current-temp">${signed(c.temperature_2m)}</div><div class="forecast-current-text">${currentText}</div></div><div class="forecast-current-feels">Ощущается как <strong>${signed(c.apparent_temperature)}</strong></div></div><div class="forecast-days">${rows}</div><div class="forecast-source">Данные: Open-Meteo · прогноз обновляется автоматически</div>`;
+    const currentBlock=hasCurrent?`<div class="forecast-current"><div class="forecast-current-icon" aria-hidden="true">${currentIcon}</div><div><div class="forecast-current-temp">${signed(c.temperature_2m)}</div><div class="forecast-current-text">${currentText}</div></div><div class="forecast-current-feels">Ощущается как <strong>${signed(c.apparent_temperature)}</strong></div></div>`:'';
+    body.innerHTML=`${currentBlock}<div class="forecast-days">${rows}</div><div class="forecast-source">Данные: Open-Meteo · прогноз обновляется автоматически</div>`;
   }
 
   function openForecast(){
@@ -130,7 +132,7 @@
     overlay.setAttribute('aria-hidden','false');
     document.documentElement.style.overflow='hidden';
     setTimeout(()=>closeButton.focus({preventScroll:true}),80);
-    if(!weatherData)loadWeather().then(renderForecast);
+    if(!weatherData.daily)loadForecast().then(renderForecast);
   }
   function closeForecast(){
     overlay.classList.remove('open');
@@ -144,31 +146,90 @@
   overlay.addEventListener('click',e=>{if(e.target===overlay)closeForecast()});
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&overlay.classList.contains('open'))closeForecast()});
 
-  async function loadWeather(){
+  function applyCurrentWeather(current,cached=false){
+    if(!current||!Number.isFinite(Number(current.temperature_2m)))return false;
+    weatherData.current=current;
+    const value=Math.round(Number(current.temperature_2m));
+    const feels=Math.round(Number(current.apparent_temperature));
+    const [symbol,text]=condition(Number(current.weather_code),Boolean(current.is_day));
+    icon.textContent=symbol;
+    temp.textContent=`${value>0?'+':''}${value}°`;
+    weather.title=`Киров: ${text}, ${value>0?'+':''}${value}°, ощущается как ${feels>0?'+':''}${feels}°${cached?' · сохранённые данные':''}. Нажмите для прогноза на 7 дней.`;
+    weather.setAttribute('aria-label',`Погода в Кирове: ${text}, ${value} градусов. Открыть прогноз на неделю`);
+    return true;
+  }
+
+  function loadCachedWeather(){
     try{
-      const url='https://api.open-meteo.com/v1/forecast?latitude=58.6036&longitude=49.6680&current=temperature_2m,apparent_temperature,weather_code,is_day&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max&forecast_days=7&temperature_unit=celsius&wind_speed_unit=kmh&timezone=Europe%2FMoscow';
-      const response=await fetch(url,{cache:'no-store'});
-      if(!response.ok)throw new Error('weather');
-      const data=await response.json();
-      const current=data.current;
-      if(!current)throw new Error('weather');
-      weatherData=data;
-      const value=Math.round(current.temperature_2m);
-      const feels=Math.round(current.apparent_temperature);
-      const [symbol,text]=condition(Number(current.weather_code),Boolean(current.is_day));
-      icon.textContent=symbol;
-      temp.textContent=`${value>0?'+':''}${value}°`;
-      weather.title=`Киров: ${text}, ${value>0?'+':''}${value}°, ощущается как ${feels>0?'+':''}${feels}°. Нажмите для прогноза на 7 дней.`;
-      weather.setAttribute('aria-label',`Погода в Кирове: ${text}, ${value} градусов. Открыть прогноз на неделю`);
-      if(overlay.classList.contains('open'))renderForecast();
-      return data;
-    }catch{
-      icon.textContent='🌡️';
-      temp.textContent='—°';
-      weather.title='Погода в Кирове временно недоступна';
-      weather.setAttribute('aria-label','Погода в Кирове временно недоступна. Открыть прогноз');
-      return null;
+      const saved=JSON.parse(localStorage.getItem('etazhi-weather-current')||'null');
+      if(saved&&Date.now()-Number(saved.saved)<12*60*60*1000&&applyCurrentWeather(saved.current,true))return true;
+    }catch{}
+    return false;
+  }
+
+  function loadCachedForecast(){
+    try{
+      const saved=JSON.parse(localStorage.getItem('etazhi-weather-forecast')||'null');
+      if(saved&&Date.now()-Number(saved.saved)<18*60*60*1000&&saved.daily?.time?.length){
+        weatherData.daily=saved.daily;
+        return true;
+      }
+    }catch{}
+    return false;
+  }
+
+  async function fetchJson(url,timeout=9000){
+    const controller=new AbortController();
+    const timer=setTimeout(()=>controller.abort(),timeout);
+    try{
+      const response=await fetch(url,{cache:'no-store',signal:controller.signal});
+      if(!response.ok)throw new Error(`HTTP ${response.status}`);
+      return await response.json();
+    }finally{clearTimeout(timer)}
+  }
+
+  async function loadWeather(){
+    const urls=[
+      'https://api.open-meteo.com/v1/forecast?latitude=58.6036&longitude=49.6680&current=temperature_2m,apparent_temperature,weather_code,is_day&temperature_unit=celsius&timezone=Europe%2FMoscow',
+      'https://api.open-meteo.com/v1/forecast?latitude=58.6036&longitude=49.6680&current=temperature_2m,apparent_temperature,weather_code,is_day&timezone=auto'
+    ];
+    for(const url of urls){
+      try{
+        const data=await fetchJson(url);
+        if(!applyCurrentWeather(data?.current))throw new Error('weather');
+        localStorage.setItem('etazhi-weather-current',JSON.stringify({current:data.current,saved:Date.now()}));
+        if(overlay.classList.contains('open'))renderForecast();
+        return data;
+      }catch{}
     }
+    if(loadCachedWeather()){
+      if(overlay.classList.contains('open'))renderForecast();
+      return weatherData;
+    }
+    icon.textContent='🌡️';
+    temp.textContent='—°';
+    weather.title='Погода в Кирове временно недоступна';
+    weather.setAttribute('aria-label','Погода в Кирове временно недоступна. Открыть прогноз');
+    return null;
+  }
+
+  async function loadForecast(){
+    body.innerHTML='<div class="forecast-loading"><div class="forecast-spinner"></div>Загружаю прогноз…</div>';
+    const urls=[
+      'https://api.open-meteo.com/v1/forecast?latitude=58.6036&longitude=49.6680&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max&forecast_days=7&temperature_unit=celsius&wind_speed_unit=kmh&timezone=Europe%2FMoscow',
+      'https://api.open-meteo.com/v1/forecast?latitude=58.6036&longitude=49.6680&daily=weather_code,temperature_2m_max,temperature_2m_min,wind_speed_10m_max&forecast_days=7&temperature_unit=celsius&wind_speed_unit=kmh&timezone=auto'
+    ];
+    for(const url of urls){
+      try{
+        const data=await fetchJson(url,12000);
+        if(!data?.daily?.time?.length)throw new Error('forecast');
+        weatherData.daily=data.daily;
+        localStorage.setItem('etazhi-weather-forecast',JSON.stringify({daily:data.daily,saved:Date.now()}));
+        return data;
+      }catch{}
+    }
+    if(loadCachedForecast())return weatherData;
+    return null;
   }
 
   function showRate(value,date,cached=false){
