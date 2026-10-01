@@ -2,7 +2,7 @@
   const play={ru:'Играть',en:'Play',fr:'Jouer',de:'Spielen'};
   const ids=['2048','snake','memory','minesweeper','tictactoe'];
   function ensureCheckersAssets(){
-    if(!document.querySelector('link[data-checkers]')){const link=document.createElement('link');link.rel='stylesheet';link.href='./checkers.css?v=1';link.dataset.checkers='1';document.head.appendChild(link);}
+    if(!document.querySelector('link[data-checkers]')){const link=document.createElement('link');link.rel='stylesheet';link.href='./checkers.css?v=2';link.dataset.checkers='1';document.head.appendChild(link);}
     if(!document.querySelector('script[data-checkers]')){const script=document.createElement('script');script.src='./checkers.js?v=1';script.defer=true;script.dataset.checkers='1';document.head.appendChild(script);}
   }
   function ensureBubbleAssets(){
