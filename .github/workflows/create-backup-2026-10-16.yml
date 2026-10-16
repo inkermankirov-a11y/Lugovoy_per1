@@ -23,12 +23,12 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          zip -qr ../Lugovoy_per1_backup_2026-10-16.zip . -x '.git/*'
+          zip -qr Lugovoy_per1_backup_2026-10-16.zip . -x '.git/*' 'Lugovoy_per1_backup_2026-10-16.zip'
 
       - name: Upload backup archive
         uses: actions/upload-artifact@v4
         with:
           name: Lugovoy_per1_backup_2026-10-16
-          path: ../Lugovoy_per1_backup_2026-10-16.zip
+          path: Lugovoy_per1_backup_2026-10-16.zip
           if-no-files-found: error
           retention-days: 30
