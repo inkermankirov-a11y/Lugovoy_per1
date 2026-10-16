@@ -1,0 +1,34 @@
+name: Create project backup 2026-10-16
+
+on:
+  push:
+    paths:
+      - '.github/workflows/create-backup-2026-10-16.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout backup snapshot
+        uses: actions/checkout@v4
+        with:
+          ref: backup-2026-10-16-full-project
+          fetch-depth: 1
+
+      - name: Create ZIP archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          zip -qr ../Lugovoy_per1_backup_2026-10-16.zip . -x '.git/*'
+
+      - name: Upload backup archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: Lugovoy_per1_backup_2026-10-16
+          path: ../Lugovoy_per1_backup_2026-10-16.zip
+          if-no-files-found: error
+          retention-days: 30
