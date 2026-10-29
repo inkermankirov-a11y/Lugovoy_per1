@@ -227,6 +227,7 @@
         const particle=document.createElement("i");
         particle.style.setProperty("--x",String(4+(i*37)%92));
         particle.style.setProperty("--delay",String((i%8)*.07)+"s");
+        particle.style.setProperty("--drift",String(((i*23)%130)-65)+"px");
         particle.style.setProperty("--color",colors[i%colors.length]);
         wrap.appendChild(particle);
       }
@@ -253,7 +254,8 @@
     document.body.classList.add("mines-playing");
     view.hidden=false;
     decorateCard();
-    view.scrollIntoView({behavior:"smooth",block:"start"});
+    window.scrollTo(0,window.scrollY);
+    view.scrollIntoView({behavior:"smooth",block:"start",inline:"nearest"});
   }
   function showGames(){
     document.body.classList.remove("mines-playing");
