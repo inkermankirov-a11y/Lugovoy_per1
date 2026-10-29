@@ -4,7 +4,7 @@
     ru:{
       title:"Сапёр",back:"← Все игры",newGame:"↻ Новая игра",eyebrow:"МИНИ-ИГРЫ / КЛАССИКА",
       hint:"Найдите все мины или откройте все безопасные клетки.",
-      mineSettings:"Количество мин",remaining:"Осталось",time:"Время",flags:"Флаги",
+      boardSize:"Поле",boardDescription:"10 × 10 · 10 мин",remaining:"Осталось",time:"Время",flags:"Флаги",
       open:"👆 Открывать",flag:"🚩 Флаг",tip:"Короткое нажатие — действие · удержание — флаг",
       win:"Победа!",lose:"Взрыв!",again:"Играть ещё",
       winDetail:"Все мины обезврежены за",loseDetail:"Попробуйте другую комбинацию флагов.",
@@ -13,7 +13,7 @@
     en:{
       title:"Minesweeper",back:"← All games",newGame:"↻ New game",eyebrow:"MINI GAMES / CLASSIC",
       hint:"Mark every mine or reveal all safe cells.",
-      mineSettings:"Number of mines",remaining:"Left",time:"Time",flags:"Flags",
+      boardSize:"Board",boardDescription:"10 × 10 · 10 mines",remaining:"Left",time:"Time",flags:"Flags",
       open:"👆 Reveal",flag:"🚩 Flag",tip:"Tap to act · hold to flag",
       win:"You win!",lose:"Boom!",again:"Play again",
       winDetail:"All mines cleared in",loseDetail:"Try another combination of flags.",
@@ -22,7 +22,7 @@
     fr:{
       title:"Démineur",back:"← Tous les jeux",newGame:"↻ Nouvelle partie",eyebrow:"MINI-JEUX / CLASSIQUE",
       hint:"Marquez toutes les mines ou découvrez les cases sûres.",
-      mineSettings:"Nombre de mines",remaining:"Restantes",time:"Temps",flags:"Drapeaux",
+      boardSize:"Plateau",boardDescription:"10 × 10 · 10 mines",remaining:"Restantes",time:"Temps",flags:"Drapeaux",
       open:"👆 Ouvrir",flag:"🚩 Drapeau",tip:"Touchez pour jouer · maintenez pour marquer",
       win:"Victoire !",lose:"Explosion !",again:"Rejouer",
       winDetail:"Toutes les mines neutralisées en",loseDetail:"Essayez une autre combinaison.",
@@ -31,7 +31,7 @@
     de:{
       title:"Minesweeper",back:"← Alle Spiele",newGame:"↻ Neues Spiel",eyebrow:"MINISPIELE / KLASSIKER",
       hint:"Markiere alle Minen oder öffne alle sicheren Felder.",
-      mineSettings:"Anzahl Minen",remaining:"Übrig",time:"Zeit",flags:"Flaggen",
+      boardSize:"Spielfeld",boardDescription:"10 × 10 · 10 Minen",remaining:"Übrig",time:"Zeit",flags:"Flaggen",
       open:"👆 Öffnen",flag:"🚩 Flagge",tip:"Tippen zum Spielen · halten für Flagge",
       win:"Gewonnen!",lose:"Explosion!",again:"Noch einmal",
       winDetail:"Alle Minen entschärft in",loseDetail:"Versuche eine andere Kombination.",
@@ -40,8 +40,7 @@
   };
   const lang=()=>translations[document.documentElement.lang]?document.documentElement.lang:"ru";
   const tr=()=>translations[lang()];
-  const W=9,H=9,SIZE=W*H;
-  const options=[10,20,30,40,50];
+  const W=10,H=10,SIZE=W*H,MINES=10;
   const neighbors=i=>{
     const x=i%W,y=Math.floor(i/W),out=[];
     for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){
@@ -51,7 +50,7 @@
     }
     return out;
   };
-  let view=null,board=null,cells=[],mineCount=10,started=false,finished=false;
+  let view=null,board=null,cells=[],started=false,finished=false;
   let flagMode=false,startedAt=0,elapsed=0,clock=null,result=null;
   let hold=null,holdStart=null,blockClickUntil=0;
   const setText=(selector,value)=>{const el=view.querySelector(selector);if(el)el.textContent=value;};
@@ -72,7 +71,7 @@
     const excluded=new Set([first,...neighbors(first)]);
     const free=[];
     for(let i=0;i<SIZE;i++)if(!excluded.has(i))free.push(i);
-    for(let n=0;n<mineCount;n++){
+    for(let n=0;n<MINES;n++){
       const pos=Math.floor(Math.random()*free.length);
       cells[free.splice(pos,1)[0]].mine=true;
     }
@@ -91,7 +90,7 @@
     },1000);
   }
   function renderStats(){
-    setText("[data-mines-left]",String(Math.max(0,mineCount-countFlags())));
+    setText("[data-mines-left]",String(Math.max(0,MINES-countFlags())));
     setText("[data-mines-time]",formattedTime());
     setText("[data-mines-flags]",String(countFlags()));
   }
@@ -121,8 +120,8 @@
     setText(".mines-back",t.back);
     setText(".mines-new",t.newGame);
     setText(".mines-help",t.hint);
-    setText(".mines-settings-label",t.mineSettings);
-    setText(".mines-settings-count",String(mineCount));
+    setText(".mines-settings-label",t.boardSize);
+    setText(".mines-settings-count",t.boardDescription);
     setText(".mines-left-label",t.remaining);
     setText(".mines-time-label",t.time);
     setText(".mines-flags-label",t.flags);
@@ -132,22 +131,9 @@
     setText(".mines-restart",t.again);
     view.querySelector(".mines-open-mode").setAttribute("aria-pressed",String(!flagMode));
     view.querySelector(".mines-flag-mode").setAttribute("aria-pressed",String(flagMode));
-    view.querySelectorAll("[data-mines-preset]").forEach(b=>{
-      b.setAttribute("aria-pressed",String(Number(b.dataset.minesPreset)===mineCount));
-    });
-    const range=view.querySelector(".mines-range");
-    range.value=String(mineCount);
-    range.style.setProperty("--mine-fill",String((mineCount-10)/40*100)+"%");
-    range.setAttribute("aria-label",t.mineSettings);
     if(result!==null)renderOutcome();
     renderBoard();
     decorateCard();
-  }
-  function chooseMines(value){
-    const next=Math.max(10,Math.min(50,Math.round(Number(value)||10)));
-    if(mineCount===next)return;
-    mineCount=next;
-    newGame();
   }
   function newGame(){
     clearClock();
@@ -177,7 +163,7 @@
   function didWin(){
     if(!started||finished)return false;
     const allSafeOpened=cells.every(c=>c.mine||c.open);
-    const allMinesFlagged=countFlags()===mineCount&&cells.every(c=>!c.mine||c.flag);
+    const allMinesFlagged=countFlags()===MINES&&cells.every(c=>!c.mine||c.flag);
     if(allSafeOpened||allMinesFlagged){
       finish(true);
       return true;
@@ -284,13 +270,7 @@
         '</div>'+
         '<div class="mines-settings">'+
           '<div class="mines-settings-top"><span class="mines-settings-label"></span>'+
-          '<strong class="mines-settings-count">10</strong></div>'+
-          '<div class="mines-presets" role="group">'+
-            options.map(n=>'<button type="button" data-mines-preset="'+n+'">'+n+'</button>').join("")+
-          '</div>'+
-          '<div class="mines-range-wrap">'+
-            '<span>10</span><input class="mines-range" type="range" min="10" max="50" step="1" value="10"><span>50</span>'+
-          '</div>'+
+          '<strong class="mines-settings-count"></strong></div>'+
         '</div>'+
         '<div class="mines-stats">'+
           '<div class="mines-stat-remaining"><span class="mines-left-label"></span><strong data-mines-left>10</strong></div>'+
@@ -302,7 +282,7 @@
           '<button type="button" class="mines-flag-mode" aria-pressed="false"></button>'+
         '</div>'+
         '<div class="mines-board-shell">'+
-          '<div class="mines-board" role="grid" aria-label="Minesweeper 9×9"></div>'+
+          '<div class="mines-board" role="grid" aria-label="Minesweeper 10×10"></div>'+
           '<div class="mines-overlay" hidden role="status" aria-live="polite">'+
             '<div class="mines-confetti" aria-hidden="true"></div>'+
             '<div class="mines-result-icon"></div><strong class="mines-result-title"></strong>'+
@@ -327,17 +307,6 @@
     view.querySelector(".mines-restart").addEventListener("click",newGame);
     view.querySelector(".mines-open-mode").addEventListener("click",()=>{flagMode=false;renderControls();});
     view.querySelector(".mines-flag-mode").addEventListener("click",()=>{flagMode=true;renderControls();});
-    view.querySelectorAll("[data-mines-preset]").forEach(b=>{
-      b.addEventListener("click",()=>chooseMines(b.dataset.minesPreset));
-    });
-    const range=view.querySelector(".mines-range");
-    range.addEventListener("input",()=>{
-      const n=Number(range.value);
-      view.querySelector(".mines-settings-count").textContent=String(n);
-      range.style.setProperty("--mine-fill",String((n-10)/40*100)+"%");
-      view.querySelectorAll("[data-mines-preset]").forEach(b=>b.setAttribute("aria-pressed",String(Number(b.dataset.minesPreset)===n)));
-    });
-    range.addEventListener("change",()=>chooseMines(range.value));
     board.addEventListener("click",e=>{
       const button=e.target.closest("[data-mine-cell]");
       if(!button||Date.now()<blockClickUntil)return;
