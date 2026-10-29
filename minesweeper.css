@@ -41,38 +41,11 @@
   margin-top:18px;padding:14px;border:1px solid #48627d7a;border-radius:19px;
   background:#ffffff0d
 }
-.mines-settings-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.mines-settings-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:0}
 .mines-settings-label{color:#d5e6f4;font-size:.85rem;font-weight:780}
 .mines-settings-count{
   padding:5px 10px;border-radius:10px;background:#54e3c51f;color:#81ffdb;
   font-variant-numeric:tabular-nums;font-size:1.02rem;font-weight:850
-}
-.mines-presets{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
-.mines-presets button{
-  min-width:0;min-height:39px;padding:6px 0;border:1px solid #4a647e;border-radius:11px;
-  background:#1c3148;color:#a9c1d7;font-size:.86rem;font-weight:800;
-  transition:background .2s ease,color .2s ease,transform .17s ease,border-color .2s ease
-}
-.mines-presets button:hover{background:#2a435c;color:#fff}
-.mines-presets button[aria-pressed="true"]{
-  border-color:#57edcb;background:linear-gradient(135deg,#63efce,#33cba8);
-  box-shadow:0 5px 16px #37e6bf2d;color:#0c2a32
-}
-.mines-range-wrap{display:flex;gap:12px;align-items:center;margin-top:12px}
-.mines-range-wrap>span{color:#8096b0;font-size:.71rem;font-weight:800}
-.mines-range{
-  appearance:none;-webkit-appearance:none;min-width:0;flex:1;width:100%;height:6px;
-  padding:0!important;margin:0;border:0;border-radius:999px;outline-offset:5px;
-  background:linear-gradient(90deg,#52e3c4 0%,#52e3c4 var(--mine-fill,0%),#344960 var(--mine-fill,0%),#344960 100%);
-  cursor:pointer
-}
-.mines-range::-webkit-slider-thumb{
-  -webkit-appearance:none;width:20px;height:20px;border-radius:50%;
-  background:#f8fffe;border:4px solid #47d7b9;box-shadow:0 3px 9px #0007
-}
-.mines-range::-moz-range-thumb{
-  width:12px;height:12px;border-radius:50%;background:#f8fffe;
-  border:4px solid #47d7b9;box-shadow:0 3px 9px #0007
 }
 .mines-stats{
   display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
@@ -109,8 +82,8 @@
 }
 .mines-board{
   width:100%;min-width:0;aspect-ratio:1/1;
-  display:grid;grid-template-columns:repeat(9,minmax(0,1fr));
-  grid-template-rows:repeat(9,minmax(0,1fr));
+  display:grid;grid-template-columns:repeat(10,minmax(0,1fr));
+  grid-template-rows:repeat(10,minmax(0,1fr));
   gap:clamp(2px,.8vw,4px);padding:0;margin:0;
   border-radius:12px;background:#22394e;overflow:hidden;
   touch-action:manipulation;-webkit-user-select:none;user-select:none
@@ -121,7 +94,7 @@
   min-width:0!important;min-height:0!important;max-width:100%;max-height:100%;
   padding:0!important;margin:0!important;border:1px solid #58728a!important;border-radius:clamp(4px,1vw,8px);
   aspect-ratio:auto;overflow:hidden;line-height:1;
-  font-size:clamp(.73rem,3.9vw,1.45rem);font-weight:850;
+  font-size:clamp(.71rem,3.3vw,1.22rem);font-weight:850;
   background:linear-gradient(140deg,#43617d,#304963);color:#e9f8ff;
   box-shadow:inset 0 1px 0 #ffffff2a,inset 0 -2px 0 #05182a38;
   transition:background .13s ease,box-shadow .13s ease,border-color .13s ease,transform .13s ease;
@@ -132,7 +105,7 @@
 .mines-view .mine-cell.is-open{
   color:#26394e;background:linear-gradient(145deg,#f7fbff,#e3eef4);
   border-color:#dae9f4!important;box-shadow:inset 0 0 0 1px #cddfeb;
-  animation:mines-reveal .24s cubic-bezier(.18,.82,.25,1.22) both
+  animation:mines-reveal .16s ease-out both
 }
 .mines-view .mine-cell.is-flagged{
   background:linear-gradient(135deg,#375978,#1f3851);
@@ -175,7 +148,7 @@
   width:9px;height:15px;border-radius:3px;background:var(--color);
   opacity:0;animation:mines-confetti 2s ease-out var(--delay) both
 }
-@keyframes mines-reveal{0%{transform:scale(.76);filter:brightness(1.2)}100%{transform:scale(1);filter:brightness(1)}}
+@keyframes mines-reveal{0%{opacity:.65}100%{opacity:1}}
 @keyframes mines-flag-in{0%{transform:scale(.65) rotate(-9deg)}70%{transform:scale(1.1) rotate(4deg)}100%{transform:scale(1) rotate(0)}}
 @keyframes mines-blast{0%{transform:scale(.72);filter:brightness(2)}60%{transform:scale(1.12)}100%{transform:scale(1)}}
 @keyframes mines-overlay-in{0%{opacity:0;transform:scale(.96)}100%{opacity:1;transform:scale(1)}}
@@ -200,7 +173,6 @@ body.mines-playing main#top{min-width:0;max-width:100%;overflow-x:clip}
 }
 @media(max-width:360px){
   .mines-panel{padding:12px 8px}
-  .mines-presets{gap:4px}
   .mines-head h2{font-size:1.48rem}
   .mines-head{gap:5px}
   .mines-new{max-width:96px;font-size:.68rem;line-height:1.15}
