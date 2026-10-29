@@ -179,7 +179,7 @@
 @keyframes mines-flag-in{0%{transform:scale(.65) rotate(-9deg)}70%{transform:scale(1.1) rotate(4deg)}100%{transform:scale(1) rotate(0)}}
 @keyframes mines-blast{0%{transform:scale(.72);filter:brightness(2)}60%{transform:scale(1.12)}100%{transform:scale(1)}}
 @keyframes mines-overlay-in{0%{opacity:0;transform:scale(.96)}100%{opacity:1;transform:scale(1)}}
-@keyframes mines-confetti{0%{opacity:0;transform:translate(0,0) rotate(0)}8%{opacity:1}80%{opacity:1}100%{opacity:0;transform:translate(calc((var(--x) - 50)*.5px),380px) rotate(700deg)}}
+@keyframes mines-confetti{0%{opacity:0;transform:translate(0,0) rotate(0)}8%{opacity:1}80%{opacity:1}100%{opacity:0;transform:translate(var(--drift,0px),380px) rotate(700deg)}}
 body.mines-playing{overflow-x:clip}
 body.mines-playing main#top{min-width:0;max-width:100%;overflow-x:clip}
 @media(max-width:760px){
